@@ -5,9 +5,11 @@
  */
 package managedbean;
 
+import conf.Address;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import session.UserManager;
 
@@ -27,7 +29,7 @@ public class UserManagedBean implements Serializable {
     public UserManagedBean() {
     }
     
-    public void createUser(String nom, String prenom, String password, String email){
-        userManager.createUser(nom,prenom,password,email);
+    public void createUser(String nom, String prenom, String password, String email,List<Address> adresses){
+        userManager.createUser(nom,prenom,password,email,adresses);
     }
 }
