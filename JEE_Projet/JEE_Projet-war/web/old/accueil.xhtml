@@ -2,19 +2,17 @@
 <div class="panel-body ">
     <form> 
         <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="inputRecherche" placeholder="Entrer votre recherche">
+            <div class="col-md-12">
+                <div class="col-md-10">
+                    <input type="text" class="form-control col-md-6" id="inputRecherche" placeholder="Entrer votre recherche"/>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <button id="boutonResearch" type="submit" class="btn btn-info" ><i class="fa fa-check-circle"></i> Rechercher</button>
+                <div class="col-md-2">
+                    <a id="boutonResearch" type="button" class="btn btn-info" ><i class="fa fa-check-circle"></i> Rechercher</a>
                 </div>
+                <a id="showOptions" class="navbar-brand" href='#' data-toggle="modal" data-target="#modalOptions">Afficher les options</a>
             </div>
         </div>
         <div >
-            <a id="showOptions" class="navbar-brand" href='#' data-toggle="modal" data-target="#modalOptions">Afficher les options</a>
             <!-- Modal -->
             <div class="modal fade" id="modalOptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
