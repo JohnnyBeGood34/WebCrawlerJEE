@@ -13,23 +13,20 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author JOHN
+ * @author Kevin
  */
 @Stateless
-public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal
-  {
+public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal {
     @PersistenceContext(unitName = "JEE_Projet-warPU")
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager()
-      {
+    protected EntityManager getEntityManager() {
         return em;
-      }
+    }
 
-    public UserFacade()
-      {
+    public UserFacade() {
         super(User.class);
-      }
+    }
     
-  }
+}
