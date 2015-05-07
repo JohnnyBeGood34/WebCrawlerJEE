@@ -1,0 +1,30 @@
+<ui:composition 
+    template="layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <ui:define name="content">
+        <h2 style="text-align:center;">
+            Inscription
+        </h2>
+            <f:view>
+                <h:form>
+                    <h1><h:outputText value="Create/Edit"/></h1>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="IdUser:" for="idUser" />
+                        <h:inputText class="form-control" id="idUser" value="#{managedbean.UserFacedeLocal.idUser}" title="IdUser" required="true" requiredMessage="The IdUser field is required."/>
+                        <h:outputLabel value="Name:" for="name" />
+                        <h:inputText id="name" value="#{managedbean.UserFacedeLocal.name}" title="Name" />
+                        <h:outputLabel value="Firstname:" for="firstname" />
+                        <h:inputText id="firstname" value="#{managedbean.UserFacedeLocal.firstname}" title="Firstname" />
+                        <h:outputLabel value="Email:" for="email" />
+                        <h:inputText id="email" value="#{managedbean.UserFacedeLocal.email}" title="Email" />
+                        <h:outputLabel value="Pass:" for="pass" />
+                        <h:inputText id="pass" value="#{managedbean.UserFacedeLocal.pass}" title="Pass" />
+                    </h:panelGrid>
+                </h:form>
+            </f:view>
+    </ui:define>
+</ui:composition>
