@@ -24,11 +24,23 @@ public class UserManager {
     @PersistenceContext(unitName = "JEE_Projet-ejbPU")
     private EntityManager em;
 
-    public void createUser(String nom, String prenom,String email, String password,List<Address> adresses) {
-        User user=new User(nom,prenom,email,password,adresses);        
+    public void createUser(String nom, String prenom,String email, String password,List<Address> addresses) {
+        User user=new User(nom,prenom,email,password,addresses);        
         persist(user);//To check, Not sure...
+       
+    }
+    
+    public void createUser(User user){
+        persist(user);
     }
 
+    
+    public void addUserAddress(User user,Address address){
+      
+        address.setIdUser(user);
+        persist(address);        
+    }
+    
     public User updateUser(User user){
         return em.merge(user);
     }

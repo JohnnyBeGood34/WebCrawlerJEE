@@ -63,7 +63,13 @@ public class Address implements Serializable {
 
     public Address() {
     }
-
+    
+    public Address(String number,String street,String codePostal){
+        this.number=number;
+        this.street=street;
+        this.postalcode=codePostal;
+    }
+    
     public Address(Integer idAddress) {
         this.idAddress = idAddress;
     }
