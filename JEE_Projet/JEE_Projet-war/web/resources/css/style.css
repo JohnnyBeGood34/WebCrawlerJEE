@@ -1,5 +1,7 @@
 #content{
     margin:auto;
+    width:1024px;
+    text-align:center;
 }
 .navbar{
     border-radius: 0 !important;
