@@ -1,0 +1,38 @@
+<h1>Mon site de recherche Email</h1>
+<div class="panel-body ">
+    <form> 
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="inputRecherche" placeholder="Entrer votre recherche">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <button id="boutonResearch" type="submit" class="btn btn-info" ><i class="fa fa-check-circle"></i> Rechercher</button>
+                </div>
+            </div>
+        </div>
+        <div >
+            <a id="showOptions" class="navbar-brand" href='#' data-toggle="modal" data-target="#modalOptions">Afficher les options</a>
+            <!-- Modal -->
+            <div class="modal fade" id="modalOptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Options de recherche</h4>
+                        </div>
+                        <div class="modal-body">
+                            OPTIONS.........
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            <button type="button" class="btn btn-primary">Valider les options</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
