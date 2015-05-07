@@ -65,12 +65,12 @@ public class User implements Serializable {
     public User() {
     }
     
-    public User(String nom,String prenom,String email,String pass,List<Address> adresses){
+    public User(String nom,String prenom,String email,String pass,List<Address> addresses){
         this.name=nom;
         this.firstname=prenom;
         this.email=email;
         this.pass=pass;
-        this.addressCollection=adresses;
+      // this.addressCollection=addresses;
     }
 
     public User(Integer idUser) {

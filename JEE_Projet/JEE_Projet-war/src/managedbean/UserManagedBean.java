@@ -29,7 +29,7 @@ public class UserManagedBean implements Serializable {
     public UserManagedBean() {
     }
     
-    public void createUser(String nom, String prenom, String password, String email,List<Address> adresses){
-        userManager.createUser(nom,prenom,password,email,adresses);
+    public void createUser(String nom, String prenom, String password, String email,List<Address> addresses){
+        userManager.createUser(nom,prenom,password,email,addresses);
     }
 }
