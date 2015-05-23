@@ -3,5 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
+        <group name="Projets">
+            <file>file:/C:/Projets/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/UserManagedBean.java</file>
+            <file>file:/C:/Projets/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/UserFacade.java</file>
+            <file>file:/C:/Projets/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/Servlets/ServletManager.java</file>
+            <file>file:/C:/Projets/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/AddressFacade.java</file>
+            <file>file:/C:/Projets/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/web/resources/css/style.css</file>
+            <file>file:/C:/Projets/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/AbstractFacade.java</file>
+        </group>
     </open-files>
 </project-private>

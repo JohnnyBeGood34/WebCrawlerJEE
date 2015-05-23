@@ -12,11 +12,10 @@ import javax.ejb.Local;
 
 /**
  *
- * @author JOHN
+ * @author Kevin
  */
 @Local
-public interface UserFacadeLocal
-  {
+public interface UserFacadeLocal {
 
     void create(User user);
 
@@ -32,4 +31,4 @@ public interface UserFacadeLocal
 
     int count();
     
-  }
+}
