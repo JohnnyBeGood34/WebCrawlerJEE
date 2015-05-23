@@ -16,14 +16,4 @@ hs_err_pid*
 /JEE_Projet/JEE_Projet-ejb/build/
 /JEE_Projet/JEE_Projet-war/dist/
 /JEE_Projet/JEE_Projet-war/build/
-<<<<<<< HEAD
-/EJBModuleWS/nbproject/private/
-/EJBModuleWS/build/
-/TEST_WS/nbproject/private/
-/TEST_WS/build/
-=======
-/JEE-Projet/nbproject/private/
-/Velib/nbproject/private/
-/Velib/build/
-/Velib/dist/
->>>>>>> b18bdffb8f6560f06e69c04a25ddb7f42d996d76
+/JEE_Projet/nbproject/private/
