@@ -2,6 +2,33 @@
     template="layout.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:h="http://xmlns.jcp.org/jsf/html">
-    
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <div class='row'>
+            <h1 style="text-align:center;">Recherche par mots clés</h1>
+            <!--<h4 style="text-align:center;">Le premier moteur de dédié au mailing de masse</h4>-->
+            <f:view>
+                <div class="row">
+                    <h:form style="text-align:center;">
+                        <div class="col-md-10" style="margin-top:5px;">
+                            <h:inputText id="therm" value="#{src.managedbean.SearchFacade.therm}" title="Therm" class='form-control'/>
+                        </div>
+                        <div class="col-md-2">
+                            <h:commandButton class="btn btn-primary" value="Rechercher" style="margin-top:5px;display:inline;"/>
+                        </div>
+                        <div class="col-md-12">
+                            <a class="pull-left" href="#" data-toggle="modal" data-target="#searchOptionsModal">Afficher les options</a>
+                        </div>
+                    </h:form>
+                </div>
+            </f:view>
+
+            <div class="row searchResults">
+                
+            </div>
+        </div>
+    </ui:define>
+
 </ui:composition>
