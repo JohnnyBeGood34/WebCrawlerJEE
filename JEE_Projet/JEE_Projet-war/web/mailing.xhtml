@@ -4,5 +4,41 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core">
-        
+    
+    <ui:define name="timeline">
+        <div id="step">
+            <div class="expand">
+                <ul>
+                    <li class="step-1 current">
+                        1 - Creation de campagne
+                    </li>
+                    <li class="step-2">
+                        2 - Personnalisation
+                    </li>
+                    <li class="step-3">
+                        3 - Résumé
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </ui:define>
+    <ui:define name="content">
+        <f:view>
+
+
+            <h:form>
+                <h1 style="text-align:center;"><h:outputText value="Campagne"/></h1>
+                    <h:outputLabel value="Title:" for="title" />
+                    <h:inputText id="title" value="#{src.managedbean.MailingCampaignFacade.title}" title="Title" />
+                    <h:outputLabel value="Langue:" for="langue" />
+                    <h:inputText id="langue" value="#{src.managedbean.MailingCampaignFacade.langue}" title="Langue" />
+                    <h:outputLabel value="RowCampaign:" for="rowCampaign" />
+                    <h:selectOneMenu id="rowCampaign" value="#{src.managedbean.MailingCampaignFacade.rowCampaign}" title="RowCampaign" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItems value="#{fixme}"/>
+                    </h:selectOneMenu>
+            </h:form>
+        </f:view>
+
+    </ui:define>
 </ui:composition>
