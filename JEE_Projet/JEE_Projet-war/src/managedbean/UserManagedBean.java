@@ -80,4 +80,12 @@ public class UserManagedBean implements Serializable {
     public String myAccountView(){
         return "profile";
     }
+    
+    public String backofficeView(){
+        return "backoffice";
+    }
+    
+    public String indexView(){
+        return "index";
+    }
 }

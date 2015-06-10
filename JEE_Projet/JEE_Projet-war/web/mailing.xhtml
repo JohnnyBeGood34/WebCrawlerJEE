@@ -23,22 +23,7 @@
         </div>
     </ui:define>
     <ui:define name="content">
-        <f:view>
-
-
-            <h:form>
-                <h1 style="text-align:center;"><h:outputText value="Campagne"/></h1>
-                    <h:outputLabel value="Title:" for="title" />
-                    <h:inputText id="title" value="#{src.managedbean.MailingCampaignFacade.title}" title="Title" />
-                    <h:outputLabel value="Langue:" for="langue" />
-                    <h:inputText id="langue" value="#{src.managedbean.MailingCampaignFacade.langue}" title="Langue" />
-                    <h:outputLabel value="RowCampaign:" for="rowCampaign" />
-                    <h:selectOneMenu id="rowCampaign" value="#{src.managedbean.MailingCampaignFacade.rowCampaign}" title="RowCampaign" >
-                        <!-- TODO: update below reference to list of available items-->
-                        <f:selectItems value="#{fixme}"/>
-                    </h:selectOneMenu>
-            </h:form>
-        </f:view>
+       
 
     </ui:define>
 </ui:composition>

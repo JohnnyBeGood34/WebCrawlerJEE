@@ -25,6 +25,14 @@ public class CompaignManager {
         em.persist(object);
     }
 
+    public void createCampaign(MailingCampaign campaign){
+        persist(campaign);
+    }
+    
+    public MailingCampaign updateCampaign(MailingCampaign campaign){
+        return em.merge(campaign);
+    }
+    
     /*
     Permet d'obtenir toutes les campagnes de mailing
     appartenant à un utilisateur

@@ -58,3 +58,10 @@
     text-decoration: none;
     color: #558c03;
 }
+
+.searchResults{
+    margin-top:15px;
+    height:250px;
+    width:100%;
+    overflow-y: scroll;
+}

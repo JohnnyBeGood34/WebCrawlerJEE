@@ -30,7 +30,24 @@
             </f:view>
 
             <div class="row searchResults">
-
+                <h3 style='text-align: center;'>Sélectionnez les adresse pour lesquelles vous voulez créer une campagne</h3>
+                <hr/>
+                <!-- Resultats factisses pour les tests (Avant implementation algo scrapping) -->
+                    <table class="table" style='margin-top:15px;'>
+                        <thead>
+                            <th><input type="checkbox"/> Tout cocher</th>
+                            <th>Résultat</th>
+                            <th>Site</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" value='michel@jeanMichel.com'/></td>
+                                <td>michel@jeanMichel.com</td>
+                                <td><a href="#">http://www.lesiteamichel.com</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <h:link style='color:white;' class='btn btn-primary pull-right' value='Créer campagne' outcome='#{campaignManagedBean.getCampaignView()}'/>
             </div>
         </div>
     </ui:define>

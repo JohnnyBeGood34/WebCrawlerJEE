@@ -23,7 +23,8 @@
             <div class="container-fluid navbarText">
                 <div class="navbar-header">
                     <h:link id="compteInscription" class="navbar-brand" rendered="#{!loginManagedBean.loggedIn}" outcome="#{userManagedBean.inscriptionView()}">S'inscrire</h:link>
-                    <h:link id="compte" class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.myAccountView()}">Mon compte</h:link>
+                    <h:link class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.myAccountView()}">Mon compte</h:link>
+                    <h:link class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.backofficeView()}">Backoffice</h:link>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <!--<form class="navbar-form navbar-right" role="search">

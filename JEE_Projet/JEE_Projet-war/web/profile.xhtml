@@ -12,7 +12,7 @@
         <hr/>
         <f:view>
             <div class='row'>
-                <h:form class='form-group'>
+                <h:form class='form-group' rendered="#{loginManagedBean.loggedIn}">
                     <div class='col-md-6'>
                         <h:outputLabel value="Nom : " for="name" />
                         <h:inputText id="name" value="#{loginManagedBean.currentUser.name}" title="Name" class='form-control'/>
@@ -51,7 +51,9 @@
                 </h:form>
             </div>
         </f:view>
-        
+        <h:panelGrid rendered="#{!loginManagedBean.loggedIn}" style='text-align:center;margin-right:auto;margin-left:auto;'>
+            Vous n'êtes pas connecté pour voir cette page : <h:link value="Retour" outcome="#{userManagedBean.indexView()}"/>
+        </h:panelGrid>
         <hr/>
         <h1 style="text-align:center">Historique de recherches</h1>
         <div class="table-bordered">
