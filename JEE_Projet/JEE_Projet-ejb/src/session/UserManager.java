@@ -45,6 +45,10 @@ public class UserManager {
         return em.merge(user);
     }
     
+    public Address updateUserAddress(Address adresse){
+        return em.merge(adresse);
+    }
+    
     public List<User> getAllUsers(){
         
         Query request = em.createNamedQuery("User.findAll");

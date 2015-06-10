@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import session.UserManager;
 
@@ -25,7 +26,7 @@ import session.UserManager;
 public class UserManagedBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    @Inject LoginManagedBean loginbean;
 
     private User utilisateur;
     private Address adresseUtilisateur;
@@ -58,7 +59,8 @@ public class UserManagedBean implements Serializable {
     }
 
     public void updateUser(){
-        userManager.updateUser(utilisateur);
+        loginbean.setCurrentUser(userManager.updateUser(loginbean.getCurrentUser()));
+        loginbean.setCurrentAddress(userManager.updateUserAddress(loginbean.getCurrentAddress()));
         FacesMessage message = new FacesMessage( "Mise à jour réussie avec succes !" );
         FacesContext.getCurrentInstance().addMessage( null, message );
     }
