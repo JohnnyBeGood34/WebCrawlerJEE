@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -20,16 +21,29 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid navbarText">
                 <div class="navbar-header">
-                    <a id="compteInscription" class="navbar-brand" href='/JEE_Projet-war/subscription.xhtml'>S'inscrire</a>
+                    <h:link id="compteInscription" class="navbar-brand" rendered="#{!loginManagedBean.loggedIn}" outcome="#{userManagedBean.inscriptionView()}">S'inscrire</h:link>
+                    <h:link id="compte" class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.myAccountView()}">Mon compte</h:link>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form class="navbar-form navbar-right" role="search">
+                    <!--<form class="navbar-form navbar-right" role="search">
                         <div id="inputLoginMdp" class="form-group">
                             <input type="text" class="form-control" placeholder="Login"/>
                             <input type="text" class="form-control" placeholder="Mot de passe"/>
                         </div>
                         <button id="connectDeconnect" type="submit" class="btn btn-info" ><i class="fa fa-check-circle"></i> Connexion</button>
-                    </form>
+                    </form>-->
+
+                    <h:form class="navbar-form navbar-right form-horizontal">
+                        <h:panelGrid columns="3" rendered="#{!loginManagedBean.loggedIn}">
+                            <div id="inputLoginMdp" class="form-group">
+                                <h:inputText value="#{credential.userName}" title="Email" class='form-control' required="true"/>
+                                <h:inputSecret value="#{credential.password}" title="Email" class='form-control' required="true"/>
+                            </div> 
+                        </h:panelGrid>
+                        <h:commandButton class="btn btn-info pull-right" value="S'identifier" action="#{loginManagedBean.login}" rendered="#{!loginManagedBean.loggedIn}"><i class="fa fa-check-circle"></i></h:commandButton>
+                        <h:commandButton class="btn btn-danger pull-right" value="Déconnexion" action="#{loginManagedBean.logOut}" rendered="#{loginManagedBean.loggedIn}"/>
+                    </h:form>
+
                 </div>
             </div>
         </nav>

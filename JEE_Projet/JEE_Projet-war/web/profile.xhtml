@@ -15,42 +15,42 @@
                 <h:form class='form-group'>
                     <div class='col-md-6'>
                         <h:outputLabel value="Nom : " for="name" />
-                        <h:inputText id="name" value="#{managedbean.UserFacade.name}" title="Name" class='form-control'/>
+                        <h:inputText id="name" value="#{loginManagedBean.currentUser.name}" title="Name" class='form-control'/>
                     </div>
                     <div class='col-md-6'>
                         <h:outputLabel value="Prénom : " for="firstname" />
-                        <h:inputText id="firstname" value="#{managedbean.UserFacade.firstname}" title="Firstname" class='form-control'/>
+                        <h:inputText id="firstname" value="#{loginManagedBean.currentUser.firstname}" title="Firstname" class='form-control'/>
                     </div>
                     <div class='col-md-4'>
                         <h:outputLabel value="Street:" for="street" />
-                        <h:inputText id="street" value="#{src.managedbean.AddressFacade.street}" title="Street" class='form-control'/>
+                        <h:inputText id="street" value="#{loginManagedBean.currentAddress.street}" title="Street" class='form-control'/>
                     </div>
                     <div class='col-md-4'>
                         <h:outputLabel value="Number:" for="number" />
-                        <h:inputText id="number" value="#{src.managedbean.AddressFacade.number}" title="Number" class='form-control'/>
+                        <h:inputText id="number" value="#{loginManagedBean.currentAddress.number}" title="Number" class='form-control'/>
                     </div>
                     <div class='col-md-4'>
                         <h:outputLabel value="Postalcode:" for="postalcode" />
-                        <h:inputText id="postalcode" value="#{src.managedbean.AddressFacade.postalcode}" title="Postalcode" class='form-control'/>
+                        <h:inputText id="postalcode" value="#{loginManagedBean.currentAddress.postalcode}" title="Postalcode" class='form-control'/>
                     </div>
                     <div class='col-md-6'>
                         <h:outputLabel value="Town:" for="town" />
-                        <h:inputText id="town" value="#{src.managedbean.AddressFacade.town}" title="Town" class='form-control'/>
+                        <h:inputText id="town" value="#{loginManagedBean.currentAddress.town}" title="Town" class='form-control'/>
                     </div>
                     <div class='col-md-6'>
                         <h:outputLabel value="Complement:" for="complement" />
-                        <h:inputText id="complement" value="#{src.managedbean.AddressFacade.complement}" title="Complement" class='form-control'/>
+                        <h:inputText id="complement" value="#{loginManagedBean.currentAddress.complement}" title="Complement" class='form-control'/>
                     </div>
                     <div class='col-md-6'>
                         <h:outputLabel value="Email : " for="email" />
-                        <h:inputText id="email" value="#{managedbean.UserFacade.email}" title="Email" class='form-control'/>
+                        <h:inputText id="email" value="#{loginManagedBean.currentUser.email}" title="Email" class='form-control'/>
                     </div>
                     <div class='col-md-6'>
                         <h:outputLabel value="Mot de passe:" for="pass" />
-                        <h:inputSecret id="pass" value="#{managedbean.UserFacade.pass}" title="Pass" class='form-control'/>
+                        <h:inputSecret id="pass" value="#{loginManagedBean.currentUser.pass}" title="Pass" class='form-control'/>
                     </div>
                     <div class='col-md-12' style='margin-top:10px;'>
-                        <h:commandButton id="createUser" value="S'inscrire" action="#{managedbean.UserFacade.update}" class='btn btn-primary pull-right'/>
+                        <h:commandButton id="createUser" value="S'inscrire" action="#{userManagedBeans.updateUser}" class='btn btn-primary pull-right'/>
                     </div>
                 </h:form>
             </div>

@@ -23,12 +23,12 @@ import javax.persistence.Query;
 public class UserManager {
     @PersistenceContext(unitName = "JEE_Projet-ejbPU")
     private EntityManager em;
-
-    public void createUser(String nom, String prenom,String email, String password,List<Address> addresses) {
+    
+    /*public void createUser(String nom, String prenom,String email, String password,List<Address> addresses) {
         User user=new User(nom,prenom,email,password,addresses);        
         persist(user);//To check, Not sure...
        
-    }
+    }*/
     
     public void createUser(User user){
         persist(user);
@@ -69,6 +69,11 @@ public class UserManager {
         return (User) request.getSingleResult();
     }
 
+    public Address getUserAddress(User idUser){
+        Query request = em.createNamedQuery("Address.findByUserId");
+        request.setParameter("idUser",idUser);
+        return (Address)request.getResultList().get(0);
+    }
     
     public void persist(Object object) {
         em.persist(object);
