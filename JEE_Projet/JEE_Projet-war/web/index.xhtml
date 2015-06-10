@@ -47,7 +47,7 @@
                             </tr>
                         </tbody>
                     </table>
-                <h:link style='color:white;' class='btn btn-primary pull-right' value='Créer campagne' outcome='#{campaignManagedBean.getCampaignView()}'/>
+                <h:link rendered="#{loginManagedBean.loggedIn}" style='color:white;' class='btn btn-primary pull-right' value='Créer campagne' outcome='#{campaignManagedBean.getCampaignView()}'/>
             </div>
         </div>
     </ui:define>

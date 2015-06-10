@@ -3,8 +3,9 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
     <ui:define name="timeline">
         <div id="step">
             <div class="expand">
@@ -23,7 +24,58 @@
         </div>
     </ui:define>
     <ui:define name="content">
+        <h1 style="text-align:center;">Création de campagne de mailing</h1>
+        <f:view>
+            <h:form rendered="#{loginManagedBean.loggedIn}">
+                <div class="col-md-2">
+                    <h:outputLabel value="Nom de la campagne : " for="title" />
+                </div>
+                <div class="col-md-10 form-group">
+                    <h:inputText required="true" class="form-control" id="title" value="#{campaignManagedBean.mailingCampaign.title}" title="Title" p:placeholder="Entrez le nom de la campagne.."/>
+                </div>
+                <div class="col-md-2">
+                    <h:outputLabel value="Langue:" for="langue" />
+                </div>
+                <div class="col-md-10 form-group">
+                    <h:inputText required="true" class="form-control" id="langue" value="#{campaignManagedBean.mailingCampaign.langue}" title="Langue" />
+                </div>
+                <div class="col-md-12">
+                    <h:commandButton action="#{campaignManagedBean.creerCampagne}" value="Suivant >>" class="btn btn-primary pull-right"/>
+                </div>
+            </h:form>
+        </f:view>
+        <h:panelGrid rendered="#{!loginManagedBean.loggedIn}" style='text-align:center;margin-right:auto;margin-left:auto;'>
+            Vous n'êtes pas connecté pour voir cette page : <h:link value="Retour" outcome="#{userManagedBean.indexView()}"/>
+        </h:panelGrid>
+
+        <h2 style="text-align: center;margin-top:15px;">Vos campagnes récentes</h2>
+        <hr/>
        
+        <f:view>
+
+            <h:form>
+                <h:dataTable value="#{campaignManagedBean.getCampaigns()}" var="item" class="table">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Campagne numéro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idMailing}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom campagne"/>
+                        </f:facet>
+                        <h:outputText value="#{item.title}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Langue"/>
+                        </f:facet>
+                        <h:outputText value="#{item.langue}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </f:view>
 
     </ui:define>
 </ui:composition>

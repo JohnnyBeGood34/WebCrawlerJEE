@@ -63,6 +63,7 @@ public class LoginManagedBean implements Serializable
         return utilisateur;
       }
     
+    
     public void setCurrentUser(User user){
         utilisateur = user;
     }
