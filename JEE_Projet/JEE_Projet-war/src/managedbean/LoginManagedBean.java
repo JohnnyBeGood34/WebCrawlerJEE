@@ -58,6 +58,10 @@ public class LoginManagedBean implements Serializable
         return utilisateur != null;
       }
 
+    public boolean isAdmin(){
+        return utilisateur!= null && "Admin".equals(utilisateur.getName()) && "admin@admin.fr".equals(utilisateur.getEmail());
+    }
+    
     public User getCurrentUser()
       {
         return utilisateur;

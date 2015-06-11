@@ -9,6 +9,7 @@ package managedbean;
 import conf.Address;
 import conf.User;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -31,12 +32,17 @@ public class UserManagedBean implements Serializable {
     private User utilisateur;
     private Address adresseUtilisateur;
 
+    private List<User> users;
     // Injection de notre EJB (Session Bean Stateless)
 
     @EJB
     private UserManager userManager;
 
 
+    public List<User> getUsers(){
+        return userManager.getAllUsers();
+    }
+    
     // Initialisation de l'entité utilisateur
 
     public UserManagedBean() {
@@ -45,7 +51,13 @@ public class UserManagedBean implements Serializable {
         adresseUtilisateur = new Address();
     }
 
+    public void activateOrDeactivateUser(Integer iduser){
+        
+    }
 
+    public String statisticsView(){
+        return "statistics";
+    }
     // Méthode d'action appelée lors du clic sur le bouton du formulaire
 
     // d'inscription

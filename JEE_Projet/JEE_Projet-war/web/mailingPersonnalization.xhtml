@@ -27,16 +27,33 @@
         <f:view>
             <h:form enctype="multipart/form-data">
                 <h1 style="text-align:center;"><h:outputText value="Personnalisez votre mail"/></h1>
-                <h:outputLabel value="Objet:" for="objet" />
-                <h:inputText id="objet" value="#{mailManagedbean.mail.objet}" title="Objet" />
-                <h:outputLabel value="Message:" for="message" />
-                <h:inputTextarea rows="4" cols="30" id="message" value="#{mailManagedbean.mail.message}" title="Message" required="true" requiredMessage="The Message field is required."/>
-
-                <h:outputLabel value="Fichier:" for="path" />
-                <h:inputFile id="path" value="#{mailManagedbean.file.path}" title="Path" />
-                <h:outputLabel value="IsInBody:" for="isInBody" />
-                <h:selectManyCheckbox id="isInBody" value="#{mailManagedbean.file.isInBody}" title="IsInBody" />
-
+                <div class='col-md-2'>
+                    <h:outputLabel value="Objet:" for="objet" />
+                </div>
+                <div class='col-md-10 form-group'>
+                    <h:inputText id="objet" value="#{mailManagedbean.mail.objet}" title="Objet" class='form-control'/>
+                </div>
+                <div class='col-md-2'>
+                    <h:outputLabel value="Message:" for="message" />
+                </div>
+                <div class='col-md-10 form-group'>
+                    <h:inputTextarea rows="15" class='form-control' cols="30" id="message" value="#{mailManagedbean.mail.message}" title="Message" required="true" requiredMessage="The Message field is required."/>
+                </div>
+                <div class='col-md-2'>
+                    <h:outputLabel value="Fichier:" for="path" />
+                </div>
+                <div class='col-md-10 form-group'>
+                    <h:inputFile id="path" value="#{mailManagedbean.file.path}" title="Path"/>
+                </div>
+                <div class='col-md-2'>
+                    <h:outputLabel value="Mettre dans le corps du mail :" for="isInBody" />
+                </div>
+                <div class='col-md-10 form-group'>
+                    <h:selectBooleanCheckbox id="isInBody" value="#{mailManagedbean.file.isInBody}" title="IsInBody" />
+                </div>
+                <div class='col-md-12'>
+                    <h:commandButton action='#{mailManagedbean.createMail()}' class='btn btn-primary pull-right' value='Envoyer >>'/>
+                </div>
             </h:form>
         </f:view>
 
