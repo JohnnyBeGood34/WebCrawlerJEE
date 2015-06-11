@@ -39,7 +39,7 @@
                     <h:form class="navbar-form navbar-right">
                             <div id="inputLoginMdp" class="form-group">
                                 <h:inputText value="#{credential.userName}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="E-mail"/>
-                                <h:inputSecret value="#{credential.password}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="Password"/>
+                                <h:inputSecret value="#{credential.password}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="Password" style='margin-left:5px;'/>
                             </div> 
                         <h:commandButton class="btn btn-info pull-right" value="S'identifier" action="#{loginManagedBean.login}" rendered="#{!loginManagedBean.loggedIn}" style="margin-left:5px;"></h:commandButton>
                         <h:commandButton class="btn btn-danger pull-right" value="Déconnexion" action="#{loginManagedBean.logOut}" rendered="#{loginManagedBean.loggedIn}"/>
