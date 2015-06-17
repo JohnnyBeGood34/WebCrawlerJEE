@@ -28,7 +28,7 @@ public class UserManagedBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Inject LoginManagedBean loginbean;
-
+    @Inject SearchManagedBean searchmanagedbean;
     private User utilisateur;
     private Address adresseUtilisateur;
 
@@ -52,7 +52,13 @@ public class UserManagedBean implements Serializable {
     }
 
     public void activateOrDeactivateUser(Integer iduser){
-        
+        User aUser = userManager.getUserById(iduser);
+        if(aUser.getDenied()){
+            aUser.setDenied(false);
+        }else{
+            aUser.setDenied(true);
+        }
+        userManager.updateUser(aUser);
     }
 
     public String statisticsView(){
@@ -77,6 +83,10 @@ public class UserManagedBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage( null, message );
     }
     
+    public String myCampaignView(){
+        return "userCampaign";
+    }
+    
     public User getUtilisateur() {
         return utilisateur;
     }
@@ -90,6 +100,8 @@ public class UserManagedBean implements Serializable {
     }
     
     public String myAccountView(){
+        //Load All searches
+        searchmanagedbean.getUserSearchArray();
         return "profile";
     }
     
@@ -99,5 +111,9 @@ public class UserManagedBean implements Serializable {
     
     public String indexView(){
         return "index";
+    }
+    
+    public String campaignDetailView(){
+        return "campaignDetails";
     }
 }

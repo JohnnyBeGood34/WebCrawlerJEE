@@ -82,4 +82,11 @@ public class UserManager {
     public void persist(Object object) {
         em.persist(object);
     }
+    
+    public User getUserById(Integer idUser){
+        Query request = em.createNamedQuery("User.findByIdUser");
+        request.setParameter("idUser",idUser);
+        return (User) request.getSingleResult();
+    }
+
 }

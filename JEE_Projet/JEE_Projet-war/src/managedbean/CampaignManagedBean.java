@@ -8,6 +8,7 @@ package managedbean;
 
 import conf.MailingCampaign;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -25,6 +26,7 @@ public class CampaignManagedBean
   {
     private List<MailingCampaign> campaigns;
     @Inject LoginManagedBean loginbean;
+    @Inject CampaignSessionbean campaignBean;
     private MailingCampaign mailingCampaign;
     
     @EJB
@@ -32,6 +34,7 @@ public class CampaignManagedBean
     
     public String creerCampagne(){
         mailingCampaign.setIdUser(loginbean.getCurrentUser().getIdUser());
+        mailingCampaign.setDateEnvoi(new Date());
         campaignManager.createCampaign(mailingCampaign);
         return "mailingPersonnalization?faces-redirect=true";
     }
@@ -60,6 +63,11 @@ public class CampaignManagedBean
     
     public MailingCampaign getMailingCampaign(){
         return mailingCampaign;
+    }
+    
+    public String getCampaignDetails(Integer campaignId){
+        campaignBean.setMailingcampaign(campaignManager.getCampaignById(campaignId));
+        return "campaignDetails?faces-redirect=true";
     }
     
   }

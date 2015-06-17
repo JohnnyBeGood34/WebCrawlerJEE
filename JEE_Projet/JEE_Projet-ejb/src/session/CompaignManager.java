@@ -33,6 +33,10 @@ public class CompaignManager {
         return em.merge(campaign);
     }
     
+    public MailingCampaign getCampaignById(Integer campaignId){
+        return em.find(MailingCampaign.class, campaignId);
+    }
+    
     /*
     Permet d'obtenir toutes les campagnes de mailing
     appartenant à un utilisateur

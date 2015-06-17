@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Effectuer.findAll", query = "SELECT e FROM Effectuer e"),
     @NamedQuery(name = "Effectuer.findByIdRow", query = "SELECT e FROM Effectuer e WHERE e.idRow = :idRow"),
-    @NamedQuery(name = "Effectuer.findByDateSearch", query = "SELECT e FROM Effectuer e WHERE e.dateSearch = :dateSearch")})
+    @NamedQuery(name = "Effectuer.findByDateSearch", query = "SELECT e FROM Effectuer e WHERE e.dateSearch = :dateSearch"),
+    @NamedQuery(name = "Effectuer.findByUserId",query = "SELECT e FROM Effectuer e WHERE e.idUser = :idUser")})
 public class Effectuer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

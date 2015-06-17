@@ -57,34 +57,37 @@
         <hr/>
         <h1 style="text-align:center">Historique de recherches</h1>
         <div class="table-bordered">
-            <table class="table">
-                <thead>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Recherche
-                    </th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            16/04/2015 15:54:30
-                        </td>
-                        <td>
-                            <a href="#" data-toggle="modal" data-target="#searchHistoryModal">Camping dans l'hérault</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            18/04/2015 23:00:00
-                        </td>
-                        <td>
-                            <a href="#" data-toggle="modal" data-target="#searchHistoryModal">Camping dans le gard</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <f:view>
+                <h:form>
+                    <h:dataTable value="#{searchManagedSessionbean.searches}" var="item" class="table" >
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Mot cherché"/>
+                            </f:facet>
+                            <h:outputText value="#{item.therm}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Niveau de profondeur"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deepLevel}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Page française"/>
+                            </f:facet>
+                            <h:outputText value="#{item.isFr}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Date recherche"/>
+                            </f:facet>
+                            <h:outputText value="#{searchManagedSessionbean.getDateForSearch(searchManagedSessionbean.searches.rowIndex)}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </f:view>
+
         </div>
     </ui:define>
 </ui:composition>

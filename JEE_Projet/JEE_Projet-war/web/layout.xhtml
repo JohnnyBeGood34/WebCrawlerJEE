@@ -9,10 +9,8 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <h:outputStylesheet name="./css/default.css"/>
-        <h:outputStylesheet name="./css/cssLayout.css"/>
         <h:outputStylesheet name="./libs/bootstrap-3.3.2-dist/css/bootstrap.css"/>
-
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"></link>
         <h:outputStylesheet name="./css/style.css"/>
         <title>Tuveuxquoi</title>
     </h:head>
@@ -22,25 +20,20 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid navbarText">
                 <div class="navbar-header">
-                    <h:link id="compteInscription" class="navbar-brand" rendered="#{!loginManagedBean.loggedIn}" outcome="#{userManagedBean.inscriptionView()}">S'inscrire</h:link>
-                    <h:link class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.myAccountView()}">Mon compte</h:link>
-                    <h:link class="navbar-brand" rendered="#{loginManagedBean.isAdmin()}" outcome="#{userManagedBean.backofficeView()}">Backoffice</h:link>
-                    <h:link class="navbar-brand" outcome="#{userManagedBean.indexView()}">Accueil</h:link>
+                    <h:link class="navbar-brand" outcome="#{userManagedBean.indexView()}"><i class='fa fa-home'></i> Accueil</h:link>
+                    <h:link id="compteInscription" class="navbar-brand" rendered="#{!loginManagedBean.loggedIn}" outcome="#{userManagedBean.inscriptionView()}"><i class='fa fa-users'></i> S'inscrire</h:link>
+                    <h:link class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.myAccountView()}"><i class='fa fa-user'></i> Mon compte</h:link>
+                    <h:link class="navbar-brand" rendered="#{loginManagedBean.loggedIn}" outcome="#{userManagedBean.myCampaignView()}"><i class='fa fa-envelope'></i> Mes campagnes</h:link>
+                    <h:link class="navbar-brand" rendered="#{loginManagedBean.isAdmin()}" outcome="#{userManagedBean.backofficeView()}">Administration</h:link>
+                    
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <!--<form class="navbar-form navbar-right" role="search">
-                        <div id="inputLoginMdp" class="form-group">
-                            <input type="text" class="form-control" placeholder="Login"/>
-                            <input type="text" class="form-control" placeholder="Mot de passe"/>
-                        </div>
-                        <button id="connectDeconnect" type="submit" class="btn btn-info" ><i class="fa fa-check-circle"></i> Connexion</button>
-                    </form>-->
 
                     <h:form class="navbar-form navbar-right">
-                            <div id="inputLoginMdp" class="form-group">
-                                <h:inputText value="#{credential.userName}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="E-mail"/>
-                                <h:inputSecret value="#{credential.password}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="Password" style='margin-left:5px;'/>
-                            </div> 
+                        <div id="inputLoginMdp" class="form-group">
+                            <h:inputText value="#{credential.userName}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="E-mail"/>
+                            <h:inputSecret value="#{credential.password}" title="Email" class='form-control' required="true" rendered="#{!loginManagedBean.loggedIn}" p:placeholder="Password" style='margin-left:5px;'/>
+                        </div> 
                         <h:commandButton class="btn btn-info pull-right" value="S'identifier" action="#{loginManagedBean.login}" rendered="#{!loginManagedBean.loggedIn}" style="margin-left:5px;"></h:commandButton>
                         <h:commandButton class="btn btn-danger pull-right" value="Déconnexion" action="#{loginManagedBean.logOut}" rendered="#{loginManagedBean.loggedIn}"/>
                     </h:form>
@@ -172,9 +165,18 @@
         </div>
 
 
-        <script src='http://code.jquery.com/jquery-latest.min.js'></script>
+        <script src='./resources/js/jquery-1.11.2.min.js'></script>
         <script src="./resources/libs/bootstrap-3.3.2-dist/js/bootstrap.min.js" type="text/javascript"></script>
-
+        <script src="./resources/tinymce/js/tinymce/tinymce.min.js" type="text/javascript"></script>
+        <ui:insert name="javascripts"></ui:insert>
+        <script type="text/javascript">
+            $(function() {
+                tinyMCE.init({
+                    mode: "textareas",
+                    theme: "modern"
+                });
+            });
+        </script>
     </h:body>
 
 </html>

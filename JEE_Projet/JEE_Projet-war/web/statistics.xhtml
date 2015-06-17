@@ -8,5 +8,15 @@
 
     <ui:define name="content">
         <h1 style="text-align: center;">Statistiques de l'application</h1>
+        <div class='col-md-6'>
+            <canvas  id="myChartCam" width="400" height="400"></canvas>
+        </div>
+        <div class='col-md-6'>
+            <canvas  id="myChartBar" width="400" height="400"></canvas>
+        </div>
+    </ui:define>
+    <ui:define name="javascripts">
+        <script type="text/javascript" src='./resources/charts/chart.min.js'></script>
+        <script type="text/javascript" src='./resources/charts/testChart.js'></script>
     </ui:define>
 </ui:composition>

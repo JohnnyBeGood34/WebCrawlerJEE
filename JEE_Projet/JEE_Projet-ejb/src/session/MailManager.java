@@ -7,11 +7,12 @@ package session;
 
 import conf.Mail;
 import java.util.List;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.commons.mail.*;
 
 /**
  *
@@ -20,6 +21,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class MailManager {
+    
     @PersistenceContext(unitName = "JEE_Projet-ejbPU")
     private EntityManager em;
 
@@ -40,5 +42,9 @@ public class MailManager {
        Query request = em.createNamedQuery("Mail.findByDistributed");
        request.setParameter("distributed",false);
      return  request.getResultList();
+   }
+   
+   public void sendMail(Email email){
+       
    }
 }

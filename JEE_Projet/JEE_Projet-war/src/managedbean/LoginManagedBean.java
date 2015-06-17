@@ -38,13 +38,18 @@ public class LoginManagedBean implements Serializable
       {
       }
 
-    public void login()
+    public String login()
       {
         if (userManager.hasUserGoodPass(credentials.getUserName(), credentials.getPassword()))
           {
             utilisateur = userManager.getUserByEmail(credentials.getUserName());
-            utilisateurAdresse = userManager.getUserAddress(utilisateur);
+            if(utilisateur.getDenied()){
+                utilisateur = null;
+            }else{
+                utilisateurAdresse = userManager.getUserAddress(utilisateur);
+            }
           }
+        return "index?faces-redirect=true";
       }
 
     public void logOut()

@@ -8,17 +8,23 @@
 
     <ui:define name="content">
         <div class='row'>
-            <h1 style="text-align:center;">Tuveuxquoi.com</h1>
-            <h5 style="text-align:center;">Moteur de recherche dédié au mailing de masse</h5>
-            <!--<h4 style="text-align:center;">Le premier moteur de dédié au mailing de masse</h4>-->
+            <div style='text-align: center;width:100%'>
+                <img src='./resources/image/testLogo.png' class='img-responsive' style='display:inline;'/>
+                <img src='./resources/image/sousLogoTest.png' class='img-responsive' style='display:inline;'/>
+            </div>
+            <br/>
+            <!--<h5 style="text-align:center;">Moteur de recherche dédié au mailing de masse</h5>
+            <h4 style="text-align:center;">Le premier moteur de dédié au mailing de masse</h4>-->
             <f:view>
                 <div class="row">
                     <h:form style="text-align:center;">
                         <div class="col-md-10" style="margin-top:5px;">
-                            <h:inputText id="therm" value="#{src.managedbean.SearchFacade.therm}" title="Therm" class='form-control' p:placeholder="Recherche par mot clés..."/>
+                            <h:inputText id="therm" value="#{searchManagedBean.search.therm}" title="Therm" class='form-control' p:placeholder="Recherche par mot clés..." />
+                            <h:inputHidden id="deepLevel" value="#{searchManagedBean.search.deepLevel}" />
+                            <h:inputHidden id="isFr" value="#{searchManagedBean.search.isFr}" />
                         </div>
                         <div class="col-md-2">
-                            <h:commandButton class="btn btn-primary" value="Rechercher" style="margin-top:5px;display:inline;"/>
+                            <h:commandButton class="btn btn-primary" value="Rechercher" style="margin-top:5px;display:inline;" action="#{searchManagedBean.createSearch()}"/>
                         </div>
                         <div class="col-md-12">
                             <h:panelGrid rendered="#{loginManagedBean.loggedIn}">
@@ -33,20 +39,20 @@
                 <h3 style='text-align: center;'>Résultats</h3>
                 <hr/>
                 <!-- Resultats factisses pour les tests (Avant implementation algo scrapping) -->
-                    <table class="table" style='margin-top:15px;'>
-                        <thead>
-                            <th><input type="checkbox"/> Tout cocher</th>
-                            <th>Résultat</th>
-                            <th>Site</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox" value='michel@jeanMichel.com'/></td>
-                                <td>michel@jeanMichel.com</td>
-                                <td><a href="#">http://www.lesiteamichel.com</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <table class="table" style='margin-top:15px;'>
+                    <thead>
+                        <th><input type="checkbox"/> Tout cocher</th>
+                        <th>Résultat</th>
+                        <th>Site</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" value='michel@jeanMichel.com'/></td>
+                            <td>michel@jeanMichel.com</td>
+                            <td><a href="#">http://www.lesiteamichel.com</a></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <h:link rendered="#{loginManagedBean.loggedIn}" style='color:white;' class='btn btn-primary pull-right' value='Créer campagne' outcome='#{campaignManagedBean.getCampaignView()}'/>
             </div>
         </div>

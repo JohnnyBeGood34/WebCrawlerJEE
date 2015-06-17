@@ -7,6 +7,12 @@
     border-radius: 0 !important;
 }
 
+.navbar-header a:hover{
+    text-decoration: none;
+    color: white;
+    background-color: #9D9D9D;
+}
+
 #step{background-color: #eee;color: #acacac;top: 0;width: 100%;z-index: 1030;margin-top:-20px;}
 .expand{display:block;height:60px;}
 #step ul {float: left;height: 60px;list-style: outside none none;margin: 0;overflow: hidden;padding: 0;width: 100%;}
