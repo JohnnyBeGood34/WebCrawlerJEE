@@ -10,6 +10,8 @@ import conf.User;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import session.UserManager;
@@ -38,18 +40,37 @@ public class LoginManagedBean implements Serializable
       {
       }
 
-    public String login()
+    public void login()
       {
-        if (userManager.hasUserGoodPass(credentials.getUserName(), credentials.getPassword()))
+        boolean isError = false;
+        if (userManager.userExists(credentials.getUserName()))
           {
-            utilisateur = userManager.getUserByEmail(credentials.getUserName());
-            if(utilisateur.getDenied()){
-                utilisateur = null;
-            }else{
-                utilisateurAdresse = userManager.getUserAddress(utilisateur);
-            }
+            if (userManager.hasUserGoodPass(credentials.getUserName(), credentials.getPassword()))
+              {
+                utilisateur = userManager.getUserByEmail(credentials.getUserName());
+                if (utilisateur.getDenied())
+                  {
+                    utilisateur = null;
+                    FacesMessage message = new FacesMessage("Votre compte n'est plus actif !");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                  } else
+                  {
+                    utilisateurAdresse = userManager.getUserAddress(utilisateur);
+                  }
+              } else
+              {
+                isError = true;
+              }
+          } else
+          {
+            isError = true;
           }
-        return "index?faces-redirect=true";
+        if (isError)
+          {
+            FacesMessage message = new FacesMessage("Erreur combinaison Login / mot de passe !");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+          }
+        //return "index?faces-redirect=true";
       }
 
     public void logOut()
@@ -63,25 +84,28 @@ public class LoginManagedBean implements Serializable
         return utilisateur != null;
       }
 
-    public boolean isAdmin(){
-        return utilisateur!= null && "Admin".equals(utilisateur.getName()) && "admin@admin.fr".equals(utilisateur.getEmail());
-    }
-    
+    public boolean isAdmin()
+      {
+        return utilisateur != null && "Admin".equals(utilisateur.getName()) && "admin@admin.fr".equals(utilisateur.getEmail());
+      }
+
     public User getCurrentUser()
       {
         return utilisateur;
       }
-    
-    
-    public void setCurrentUser(User user){
+
+    public void setCurrentUser(User user)
+      {
         utilisateur = user;
-    }
-    
-    public void setCurrentAddress(Address adresse){
+      }
+
+    public void setCurrentAddress(Address adresse)
+      {
         utilisateurAdresse = adresse;
-    }
-    
-    public Address getCurrentAddress(){
+      }
+
+    public Address getCurrentAddress()
+      {
         return utilisateurAdresse;
-    }
+      }
   }

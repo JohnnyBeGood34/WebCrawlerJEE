@@ -7,6 +7,7 @@ package session;
 
 import conf.Effectuer;
 import conf.Search;
+import conf.Searchresults;
 import conf.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,13 @@ public class SearchManager {
 
     public void createSearch(Search aSearch){
         em.persist(aSearch);
+    }
+    
+    public String getDateFromSearchId(Search aSearch){
+        Query request = em.createNamedQuery("Effectuer.findByDateSearch");
+        request.setParameter("idSearch", aSearch);
+        String dateToRetreive = (String) request.getSingleResult();
+        return dateToRetreive;
     }
     
     public boolean testSearchExistanceByTherm(String therm){
@@ -54,25 +62,34 @@ public class SearchManager {
         return request.getResultList();
     }
 
-    public List<Effectuer> getAllUserSearches(User currentUser){
+    public ArrayList<Effectuer> getAllUserSearches(User currentUser){
+        ArrayList<Effectuer> effectuerArrayList = new ArrayList<Effectuer>();
         Query request = em.createNamedQuery("Effectuer.findByUserId");
         request.setParameter("idUser", currentUser);
-        return (ArrayList<Effectuer>) request.getResultList();
+        for(Effectuer userSearch : (List<Effectuer>) request.getResultList()){
+            effectuerArrayList.add(userSearch);
+        }
+        return effectuerArrayList;
     }
     
-    public List<Search> getAllSearchForUser(User currentUser)
+    public ArrayList<Search> getAllSearchForUser(User currentUser)
       {
-        ArrayList<Effectuer> userSearches = new ArrayList<>();
         ArrayList<Search> searches = new ArrayList<>();
         Query request = em.createNamedQuery("Effectuer.findByUserId");
         request.setParameter("idUser", currentUser);
-        userSearches = (ArrayList<Effectuer>) request.getResultList();
-        for(Effectuer userSearch : userSearches){
+        for(Effectuer userSearch : (List<Effectuer>) request.getResultList()){
             Query userSearchRequest = em.createNamedQuery("Search.findByIdSearch");
-            userSearchRequest.setParameter("idSearch",userSearch.getIdSearch());
+            userSearchRequest.setParameter("idSearch",userSearch.getIdSearch().getIdSearch());
             searches.add((Search)userSearchRequest.getSingleResult());
         }
         return searches;
+      }
+
+    public List<Searchresults> getResultsFromDataBase(Search search)
+      {
+        Query request = em.createNamedQuery("Searchresults.findByIdSearch");
+        request.setParameter("idSearch", search);
+        return request.getResultList();
       }
     
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package managedbean;
 
 import conf.Address;
@@ -24,11 +23,14 @@ import session.UserManager;
  */
 @Named(value = "userManagedBean")
 @RequestScoped
-public class UserManagedBean implements Serializable {
+public class UserManagedBean implements Serializable
+  {
 
     private static final long serialVersionUID = 1L;
-    @Inject LoginManagedBean loginbean;
-    @Inject SearchManagedBean searchmanagedbean;
+    @Inject
+    LoginManagedBean loginbean;
+    @Inject
+    SearchManagedBean searchmanagedbean;
     private User utilisateur;
     private Address adresseUtilisateur;
 
@@ -38,82 +40,118 @@ public class UserManagedBean implements Serializable {
     @EJB
     private UserManager userManager;
 
-
-    public List<User> getUsers(){
+    public List<User> getUsers()
+      {
         return userManager.getAllUsers();
-    }
-    
-    // Initialisation de l'entité utilisateur
+      }
 
-    public UserManagedBean() {
+    // Initialisation de l'entité utilisateur
+    public UserManagedBean()
+      {
 
         utilisateur = new User();
         adresseUtilisateur = new Address();
-    }
+      }
 
-    public void activateOrDeactivateUser(Integer iduser){
+    public void activateOrDeactivateUser(Integer iduser)
+      {
         User aUser = userManager.getUserById(iduser);
-        if(aUser.getDenied()){
+        if (aUser.getDenied())
+          {
             aUser.setDenied(false);
-        }else{
+          } else
+          {
             aUser.setDenied(true);
-        }
+          }
         userManager.updateUser(aUser);
-    }
+      }
 
-    public String statisticsView(){
+    public String statisticsView()
+      {
         return "statistics";
-    }
+      }
     // Méthode d'action appelée lors du clic sur le bouton du formulaire
 
     // d'inscription
+    public void inscrire()
+      {
+        userManager.createUser(utilisateur);
+        userManager.addUserAddress(utilisateur, adresseUtilisateur);
+        FacesMessage message = new FacesMessage("Inscription réussie avec succes !");
+        FacesContext.getCurrentInstance().addMessage(null, message);
 
-    public void inscrire() {
-        userManager.createUser( utilisateur );
-        userManager.addUserAddress(utilisateur,adresseUtilisateur);
-        FacesMessage message = new FacesMessage( "Inscription réussie avec succes !" );
-        FacesContext.getCurrentInstance().addMessage( null, message );
+      }
 
-    }
-
-    public void updateUser(){
+    public void updateUser()
+      {
         loginbean.setCurrentUser(userManager.updateUser(loginbean.getCurrentUser()));
         loginbean.setCurrentAddress(userManager.updateUserAddress(loginbean.getCurrentAddress()));
-        FacesMessage message = new FacesMessage( "Mise à jour réussie avec succes !" );
-        FacesContext.getCurrentInstance().addMessage( null, message );
-    }
-    
-    public String myCampaignView(){
-        return "userCampaign";
-    }
-    
-    public User getUtilisateur() {
+        FacesMessage message = new FacesMessage("Mise à jour réussie avec succes !");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+      }
+
+    public String myCampaignView()
+      {
+        String renderedPage = "index";
+        if (loginbean.getCurrentUser() != null)
+          {
+            renderedPage = "userCampaign";
+          }
+        return renderedPage;
+      }
+
+    public User getUtilisateur()
+      {
         return utilisateur;
-    }
-    
-    public Address getAdresseUtilisateur(){
+      }
+
+    public Address getAdresseUtilisateur()
+      {
         return adresseUtilisateur;
-    }
-    
-    public String inscriptionView(){
-        return "subscription";
-    }
-    
-    public String myAccountView(){
-        //Load All searches
-        searchmanagedbean.getUserSearchArray();
-        return "profile";
-    }
-    
-    public String backofficeView(){
-        return "backoffice";
-    }
-    
-    public String indexView(){
+      }
+
+    public String inscriptionView()
+      {
+        String renderedPage = "index";
+        if (loginbean.getCurrentUser() == null)
+          {
+            renderedPage = "subscription";
+          }
+        return renderedPage;
+      }
+
+    public String myAccountView()
+      {
+        String renderedPage = "index";
+        if (loginbean.getCurrentUser() != null)
+          {
+            renderedPage = "profile";
+          }
+        return renderedPage;
+      }
+
+    public String backofficeView()
+      {
+        String renderedPage = "index";
+        if (loginbean.isAdmin() != false)
+          {
+            renderedPage = "backoffice";
+          }
+        return renderedPage;
+      }
+
+    public String indexView()
+      {
         return "index";
-    }
-    
-    public String campaignDetailView(){
-        return "campaignDetails";
-    }
-}
+      }
+
+    public String campaignDetailView()
+      {
+        String renderedPage = "index";
+        if (loginbean.getCurrentUser() != null)
+          {
+            renderedPage = "campaignDetails";
+          }
+        return renderedPage;
+      }
+  }

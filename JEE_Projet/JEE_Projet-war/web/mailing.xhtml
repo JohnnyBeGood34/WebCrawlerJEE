@@ -37,7 +37,11 @@
                     <h:outputLabel value="Langue:" for="langue" />
                 </div>
                 <div class="col-md-10 form-group">
-                    <h:inputText required="true" class="form-control" id="langue" value="#{campaignManagedBean.mailingCampaign.langue}" title="Langue" />
+                    <h:selectOneMenu value="#{campaignManagedBean.mailingCampaign.langue}" class='form-control'>
+                        <f:selectItem itemValue="#{null}" itemLabel="-- Langue --" />
+                        <f:selectItem itemValue="Fr" itemLabel="Français" />
+                        <f:selectItem itemValue="En" itemLabel="Anglais" />
+                    </h:selectOneMenu>
                 </div>
                 <div class="col-md-12">
                     <h:commandButton action="#{campaignManagedBean.creerCampagne}" value="Suivant >>" class="btn btn-primary pull-right"/>
@@ -50,7 +54,7 @@
 
         <h2 style="text-align: center;margin-top:15px;">Vos campagnes récentes</h2>
         <hr/>
-       
+
         <f:view>
 
             <h:form>

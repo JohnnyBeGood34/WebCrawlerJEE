@@ -89,4 +89,9 @@ public class UserManager {
         return (User) request.getSingleResult();
     }
 
+    public boolean userExists(String email){
+        Query request = em.createNamedQuery("User.findByEmail");
+        request.setParameter("email", email);
+        return request.getResultList().size() == 1;
+    }
 }

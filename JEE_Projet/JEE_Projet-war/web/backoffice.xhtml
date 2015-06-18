@@ -40,7 +40,9 @@
                         <f:facet name="header">
                             <h:outputText value="Action"/>
                         </f:facet>
-                        <h:commandButton class="btn btn-warning" value="Désactiver compte" action="#{userManagedBean.activateOrDeactivateUser(item.idUser)}"/>
+                        
+                        <h:commandButton rendered='#{!item.denied}' class="btn btn-warning" value="Désactiver compte" action="#{userManagedBean.activateOrDeactivateUser(item.idUser)}"/>
+                        <h:commandButton rendered='#{item.denied}' class="btn btn-primary" value="Activer compte" action="#{userManagedBean.activateOrDeactivateUser(item.idUser)}"/>
                     </h:column>
                 </h:dataTable>
             </h:form>

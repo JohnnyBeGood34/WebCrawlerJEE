@@ -24,21 +24,37 @@ import session.SearchManager;
 public class SearchManagedBean
   {
 
+    private List<Search> searchList;
     private Search search;
     private Effectuer userSearch;
     @Inject
     LoginManagedBean loginbean;
     @Inject
-    SearchManagedSessionbean searchManagedSessionBean;
+    UserSearchManagedSessionBean userSearchSessionBean;
     @EJB
     private SearchManager searchManager;
+    private String deepLevel;
 
-    public void getUserSearchArray(){
-        searchManagedSessionBean.setSearches(searchManager.getAllSearchForUser(loginbean.getCurrentUser()));
-        searchManagedSessionBean.setUserSearches(searchManager.getAllUserSearches(loginbean.getCurrentUser()));
-        
-    }
-    
+    public String getDeepLevel()
+      {
+        return this.deepLevel;
+      }
+
+    public void setDeepLevel(String level)
+      {
+        this.deepLevel = level;
+      }
+
+    public List<Search> getSearchlist()
+      {
+        return searchManager.getAllSearchForUser(loginbean.getCurrentUser());
+      }
+
+    public void setSearchList(List<Search> searches)
+      {
+        searchList = searches;
+      }
+
     public SearchManager getSearchManager()
       {
         return searchManager;
@@ -66,34 +82,70 @@ public class SearchManagedBean
       {
         this.search = new Search();
         this.searchManager = new SearchManager();
+        this.userSearch = new Effectuer();
+        this.deepLevel = null;
       }
 
     public void createSearch()
       {
-        Search searchFromDb = null;
-        boolean searchExists = searchManager.testSearchExistanceByTherm(this.search.getTherm());
-        if (searchExists)
+        if (loginbean.getCurrentUser() != null)
           {
-            searchFromDb = searchManager.getSearchForTherm(this.search.getTherm());
-          } else
-          {
-            //Create
-            searchManager.createSearch(this.search);
-            System.out.println("SEARCH ID : " + this.search.getIdSearch());
-            //populate Effectuer
-            userSearch.setDateSearch(new Date());
-            userSearch.setIdSearch(this.search);
-            userSearch.setIdUser(loginbean.getCurrentUser());
-            //Create Effectuer
-            searchManager.createUserSearch(userSearch);
-          }
-        //Here need to get results from database according to the date
-        if (searchFromDb != null)
-          {
+            Search searchFromDb = null;
+            boolean searchExists = searchManager.testSearchExistanceByTherm(this.search.getTherm());
+            if (searchExists)
+              {
+                searchFromDb = searchManager.getSearchForTherm(this.search.getTherm());
+              } else
+              {
+                Integer deeplevelinteger = 1;
+                if (deepLevel != null)
+                  {
+                    switch (deepLevel)
+                      {
+                        case "2":
+                            deeplevelinteger = 2;
+                            break;
+                        case "3":
+                            deeplevelinteger = 3;
+                            break;
+                        case "4":
+                            deeplevelinteger = 4;
+                            break;
+                        case "5":
+                            deeplevelinteger = 5;
+                            break;
+                      }
+                  }
+                this.search.setDeepLevel(deeplevelinteger);
+                if (this.search.getIsFr() == null)
+                  {
+                    this.search.setIsFr(false);
+                  }
 
+                //Create
+                searchManager.createSearch(this.search);
+
+                //populate Effectuer
+                if (loginbean.getCurrentUser() != null)
+                  {
+                    userSearch.setDateSearch(new Date());
+                    userSearch.setIdSearch(this.search);
+                    userSearch.setIdUser(loginbean.getCurrentUser());
+                    //Create Effectuer
+                    searchManager.createUserSearch(userSearch);
+                  }
+              }
+            //Here need to get results from database according to the date
+            if (searchFromDb != null)
+              {
+                
+              } else
+              {
+                //here need to lauch the scrapper
+              }
           } else
           {
-            //here need to lauch the scrapper
+            //here need to lauch the scrapper and show results
           }
 
       }
