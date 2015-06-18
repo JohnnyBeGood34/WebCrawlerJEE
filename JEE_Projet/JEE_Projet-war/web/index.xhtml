@@ -56,52 +56,46 @@
                 </div>
             </f:view>
 
-            <div class="row searchResults">
+            <div class="row searchResults" style="margin-bottom: 20px;">
                 <h3 style='text-align: center;'>Résultats</h3>
                 <hr/>
-                <!-- Resultats factisses pour les tests (Avant implementation algo scrapping) 
-                <table class="table" style='margin-top:15px;'>
-                    <thead>
-                        <th><input type="checkbox"/> Tout cocher</th>
-                        <th>Résultat</th>
-                        <th>Site</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="checkbox" value='michel@jeanMichel.com'/></td>
-                            <td>michel@jeanMichel.com</td>
-                            <td><a href="#">http://www.lesiteamichel.com</a></td>
-                        </tr>
-                    </tbody>
-                </table>-->
                 <f:view>
-
-
-                    <h:form>
+                    <h:form rendered="#{searchResultsManagedBean.searchResults.size() >1}">
                         <h:dataTable value="#{searchResultsManagedBean.searchResults}" var="item" class="table">
                             <h:column>
                                 <f:facet name="header">
-                                    <input type="checkbox"/> <h:outputText value="Tout cocher"/> 
+                                    <h:commandButton action="#{searchResultsManagedBean.updateAllIsInCampaign()}" value="Tout ajouter" class="btn btn-primary">
+                                        <f:ajax />
+                                    </h:commandButton>
                                 </f:facet>
-                                <input type="checkbox"/>
+                                <!--<h:selectBooleanCheckbox value="#{item.isInCampaign}"/>-->
+                                <h:commandButton rendered="#{!item.isInCampaign}" action="#{searchResultsManagedBean.updateIsInCampaign(item)}" value="+" class="btn btn-primary addToCampaignButton">
+                                    <f:ajax />
+                                </h:commandButton>
+                                <h:commandButton rendered="#{item.isInCampaign}" action="#{searchResultsManagedBean.updateIsInCampaign(item)}" value="-" class="btn btn-danger addToCampaignButton">
+                                    <f:ajax />
+                                </h:commandButton>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
-                                    <h:outputText value="EmailResult"/>
+                                    <h:outputText value="Adresse trouvée"/>
                                 </f:facet>
                                 <h:outputText value="#{item.emailResult}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
-                                    <h:outputText value="SiteFound"/>
+                                    <h:outputText value="Site"/>
                                 </f:facet>
-                                <h:outputText value="#{item.siteFound}"/>
+                                <h:outputLink value="http://#{item.siteFound}">#{item.siteFound}</h:outputLink>
                             </h:column>
                         </h:dataTable>
+                        <h:commandLink rendered="#{loginManagedBean.loggedIn and searchResultsManagedBean.searchResults.size() >1}" style='color:white;' class='btn btn-primary pull-right' value='Créer campagne' action='#{campaignManagedBean.getCampaignView()}'/>
+
                     </h:form>
                 </f:view>
-
-                <h:link rendered="#{loginManagedBean.loggedIn}" style='color:white;' class='btn btn-primary pull-right' value='Créer campagne' outcome='#{campaignManagedBean.getCampaignView()}'/>
+                <div class="col-md-12" style="text-align: center;">
+                    <h:outputLabel value="Aucuns résultats" rendered="#{searchResultsManagedBean.searchResults.size() == 0}"/>
+                </div>
             </div>
         </div>
     </ui:define>

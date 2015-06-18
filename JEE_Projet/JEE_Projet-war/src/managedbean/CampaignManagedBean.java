@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package managedbean;
 
 import conf.MailingCampaign;
+import conf.Searchresults;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,28 +24,40 @@ import session.CompaignManager;
 @RequestScoped
 public class CampaignManagedBean
   {
+
     private List<MailingCampaign> campaigns;
-    @Inject LoginManagedBean loginbean;
-    @Inject CampaignSessionbean campaignBean;
+    @Inject
+    LoginManagedBean loginbean;
+    @Inject
+    CampaignSessionbean campaignBean;
+    @Inject
+    SearchResultsManagedBean searchResultManagedBean;
+    @Inject
+    SearchManagedSessionBean searchManagedSessionBean;
     private MailingCampaign mailingCampaign;
-    
+
     @EJB
     CompaignManager campaignManager;
-    
-    public String creerCampagne(){
+
+    public String creerCampagne()
+      {
         mailingCampaign.setIdUser(loginbean.getCurrentUser().getIdUser());
         mailingCampaign.setDateEnvoi(new Date());
+        mailingCampaign.setIdSearch(searchManagedSessionBean.getSearch().getIdSearch());
         campaignManager.createCampaign(mailingCampaign);
         return "mailingPersonnalization?faces-redirect=true";
-    }
+      }
+
     /**
      * Get all campaigns fo main user
-     * @return 
+     *
+     * @return
      */
-    public List<MailingCampaign> getCampaigns(){
+    public List<MailingCampaign> getCampaigns()
+      {
         return campaignManager.getCampaignByUser(loginbean.getCurrentUser().getIdUser());
-    }
-    
+      }
+
     /**
      * Creates a new instance of CampaignManagedBean
      */
@@ -53,21 +65,33 @@ public class CampaignManagedBean
       {
         mailingCampaign = new MailingCampaign();
       }
+
     /**
      * FOR TESTS ONLY
-     * @return 
+     *
+     * @return
      */
-    public String getCampaignView(){
+    public String getCampaignView()
+      {
+        if (searchResultManagedBean.getLocalSearchResults().size() > 1)
+          {
+            for (Searchresults sr : searchResultManagedBean.getLocalSearchResults())
+              {
+                System.out.println("THE FUCKING IS IN CAMPAIGN : " + sr.getIsInCampaign());
+              }
+          }
         return "mailing";
-    }
-    
-    public MailingCampaign getMailingCampaign(){
+      }
+
+    public MailingCampaign getMailingCampaign()
+      {
         return mailingCampaign;
-    }
-    
-    public String getCampaignDetails(Integer campaignId){
+      }
+
+    public String getCampaignDetails(Integer campaignId)
+      {
         campaignBean.setMailingcampaign(campaignManager.getCampaignById(campaignId));
         return "campaignDetails?faces-redirect=true";
-    }
-    
+      }
+
   }

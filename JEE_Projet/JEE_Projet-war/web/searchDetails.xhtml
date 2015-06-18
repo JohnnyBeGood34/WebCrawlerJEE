@@ -1,0 +1,39 @@
+<ui:composition 
+    template="layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:define name="content">
+        <h1 style="text-align:center;">Résultats de la recherche</h1>
+        <f:view>
+            <h:form rendered="#{searchResultsManagedBean.searchResults.size() >1}">
+                <h:dataTable value="#{searchResultsManagedBean.searchResults}" var="item" class="table">
+                    <h:column>
+                        <f:facet name="header">
+                            <input type="checkbox"/> <h:outputText value=" Tout cocher"/> 
+                        </f:facet>
+                        <input type="checkbox"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Adresse trouvée"/>
+                        </f:facet>
+                        <h:outputText value="#{item.emailResult}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Site"/>
+                        </f:facet>
+                        <h:outputLink value="http://#{item.siteFound}">#{item.siteFound}</h:outputLink>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </f:view>
+        <div class="col-md-12" style="text-align: center;">
+            <h:outputLabel value="Aucuns résultats connus pour cette recherche" rendered="#{searchResultsManagedBean.searchResults.size() == 0}"/>
+        </div>
+    </ui:define>
+</ui:composition>

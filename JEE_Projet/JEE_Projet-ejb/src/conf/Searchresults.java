@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Searchresults.findByIdSearchResult", query = "SELECT s FROM Searchresults s WHERE s.idSearchResult = :idSearchResult"),
     @NamedQuery(name = "Searchresults.findByEmailResult", query = "SELECT s FROM Searchresults s WHERE s.emailResult = :emailResult"),
     @NamedQuery(name = "Searchresults.findBySiteFound", query = "SELECT s FROM Searchresults s WHERE s.siteFound = :siteFound"),
+    @NamedQuery(name = "Searchresults.findByIsInCampaign", query = "SELECT s FROM Searchresults s WHERE s.isInCampaign = :isInCampaign"),
     @NamedQuery(name = "Searchresults.findByIdSearch", query = "SELECT s FROM Searchresults s WHERE s.idSearch = :idSearch")
   })
 public class Searchresults implements Serializable
@@ -53,6 +54,10 @@ public class Searchresults implements Serializable
     @Size(min = 1, max = 255)
     @Column(name = "SITE_FOUND")
     private String siteFound;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IS_IN_CAMPAIGN")
+    private boolean isInCampaign;
     @JoinColumn(name = "ID_SEARCH", referencedColumnName = "ID_SEARCH")
     @ManyToOne
     private Search idSearch;
@@ -66,10 +71,11 @@ public class Searchresults implements Serializable
         this.idSearchResult = idSearchResult;
       }
 
-    public Searchresults(Integer idSearchResult, String siteFound)
+    public Searchresults(Integer idSearchResult, String siteFound, boolean isInCampaign)
       {
         this.idSearchResult = idSearchResult;
         this.siteFound = siteFound;
+        this.isInCampaign = isInCampaign;
       }
 
     public Integer getIdSearchResult()
@@ -100,6 +106,16 @@ public class Searchresults implements Serializable
     public void setSiteFound(String siteFound)
       {
         this.siteFound = siteFound;
+      }
+
+    public boolean getIsInCampaign()
+      {
+        return isInCampaign;
+      }
+
+    public void setIsInCampaign(boolean isInCampaign)
+      {
+        this.isInCampaign = isInCampaign;
       }
 
     public Search getIdSearch()

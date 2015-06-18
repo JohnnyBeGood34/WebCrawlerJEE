@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MailingCampaign.findByIdUser", query = "SELECT m FROM MailingCampaign m WHERE m.idUser = :idUser"),
     @NamedQuery(name = "MailingCampaign.findByTitle", query = "SELECT m FROM MailingCampaign m WHERE m.title = :title"),
     @NamedQuery(name = "MailingCampaign.findByLangue", query = "SELECT m FROM MailingCampaign m WHERE m.langue = :langue"),
-    @NamedQuery(name = "MailingCampaign.findByDateEnvoi", query = "SELECT m FROM MailingCampaign m WHERE m.dateEnvoi = :dateEnvoi")
+    @NamedQuery(name = "MailingCampaign.findByDateEnvoi", query = "SELECT m FROM MailingCampaign m WHERE m.dateEnvoi = :dateEnvoi"),
+    @NamedQuery(name = "MailingCampaign.findByIdSearch", query = "SELECT m FROM MailingCampaign m WHERE m.idSearch = :idSearch")
   })
 public class MailingCampaign implements Serializable
   {
@@ -60,6 +61,10 @@ public class MailingCampaign implements Serializable
     @Column(name = "DATE_ENVOI")
     @Temporal(TemporalType.DATE)
     private Date dateEnvoi;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_SEARCH")
+    private int idSearch;
 
     public MailingCampaign()
       {
@@ -70,10 +75,11 @@ public class MailingCampaign implements Serializable
         this.idMailing = idMailing;
       }
 
-    public MailingCampaign(Integer idMailing, Date dateEnvoi)
+    public MailingCampaign(Integer idMailing, Date dateEnvoi, int idSearch)
       {
         this.idMailing = idMailing;
         this.dateEnvoi = dateEnvoi;
+        this.idSearch = idSearch;
       }
 
     public Integer getIdMailing()
@@ -124,6 +130,16 @@ public class MailingCampaign implements Serializable
     public void setDateEnvoi(Date dateEnvoi)
       {
         this.dateEnvoi = dateEnvoi;
+      }
+
+    public int getIdSearch()
+      {
+        return idSearch;
+      }
+
+    public void setIdSearch(int idSearch)
+      {
+        this.idSearch = idSearch;
       }
 
     @Override

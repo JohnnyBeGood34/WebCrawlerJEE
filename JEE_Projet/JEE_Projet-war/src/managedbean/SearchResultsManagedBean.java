@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package managedbean;
 
+import conf.Search;
 import conf.Searchresults;
 import java.util.List;
 import javax.ejb.EJB;
@@ -22,19 +22,41 @@ import session.SearchManager;
 @RequestScoped
 public class SearchResultsManagedBean
   {
+
     private List<Searchresults> searchResults;
     @EJB
     private SearchManager searchManager;
     @Inject
     SearchManagedSessionBean searchSessionbean;
+
     /**
      * Creates a new instance of SearchResultsManagedBean
      */
     public SearchResultsManagedBean()
       {
       }
-    
-    public List<Searchresults> getSearchResults(){
-        return searchManager.getResultsFromDataBase(searchSessionbean.getSearch());
+
+    public void updateIsInCampaign(Searchresults searchResult){
+        searchManager.updateIsInCampaign(searchResult);
     }
+    
+    public void updateAllIsInCampaign(){
+        
+    }
+    
+    public List<Searchresults> getSearchResults()
+      {
+        this.searchResults = searchManager.getResultsFromDataBase(searchSessionbean.getSearch());
+        return this.searchResults;
+      }
+
+    public void setSearchResults(Search aSearch)
+      {
+        searchSessionbean.setSearch(aSearch);
+      }
+
+    public List<Searchresults> getLocalSearchResults()
+      {
+        return this.searchResults;
+      }
   }

@@ -64,7 +64,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Mot cherché"/>
                             </f:facet>
-                            <h:outputText value="#{item.therm}"/>
+                            <h:commandLink action="#{searchManagedBean.getResultForSearch(item)}"><h:outputText value="#{item.therm}"/></h:commandLink>
                         </h:column>
                         <h:column>
                             <f:facet name="header">

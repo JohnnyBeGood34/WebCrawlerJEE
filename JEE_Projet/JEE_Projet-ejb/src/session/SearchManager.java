@@ -91,5 +91,15 @@ public class SearchManager {
         request.setParameter("idSearch", search);
         return request.getResultList();
       }
+
+    public void updateIsInCampaign(Searchresults searchResult)
+      {
+        if(searchResult.getIsInCampaign()){
+            searchResult.setIsInCampaign(false);
+        }else{
+            searchResult.setIsInCampaign(true);
+        }
+        em.merge(searchResult);
+      }
     
 }

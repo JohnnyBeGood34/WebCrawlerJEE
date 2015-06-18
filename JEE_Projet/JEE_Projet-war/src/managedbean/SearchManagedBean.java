@@ -7,6 +7,7 @@ package managedbean;
 
 import conf.Effectuer;
 import conf.Search;
+import conf.Searchresults;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -31,6 +32,8 @@ public class SearchManagedBean
     LoginManagedBean loginbean;
     @Inject
     UserSearchManagedSessionBean userSearchSessionBean;
+    @Inject
+    SearchResultsManagedBean searchResultsManagedBean;
     @EJB
     private SearchManager searchManager;
     private String deepLevel;
@@ -86,6 +89,11 @@ public class SearchManagedBean
         this.deepLevel = null;
       }
 
+    public String getResultForSearch(Search idSearch){
+        searchResultsManagedBean.setSearchResults(idSearch);
+        return "searchDetails?faces-redirect=true";
+    }
+    
     public void createSearch()
       {
         if (loginbean.getCurrentUser() != null)
@@ -138,8 +146,9 @@ public class SearchManagedBean
             //Here need to get results from database according to the date
             if (searchFromDb != null)
               {
-                
-              } else
+                searchResultsManagedBean.setSearchResults(searchFromDb);
+              } 
+            else
               {
                 //here need to lauch the scrapper
               }

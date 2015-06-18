@@ -7,7 +7,22 @@ $(function(){
     panelVisibility();
     hidePanel();
     showPanel();
+    handleClickOnAddToCampaign();
 });
+
+function handleClickOnAddToCampaign(){
+    $(".addToCampaignButton").click(function(){
+        if($(this).hasClass("btn-primary")){
+            $(this).removeClass("btn-primary");
+            $(this).addClass("btn-danger");
+            $(this).val("-");
+        }else if($(this).hasClass("btn-danger")){
+            $(this).removeClass("btn-danger");
+            $(this).addClass("btn-primary");
+            $(this).val("+");
+        }
+    });
+}
 
 function panelVisibility(){
     $('.hidePanel').hide();
