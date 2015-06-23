@@ -158,7 +158,6 @@ public class SearchManagedBean
             //Here need to get results from database according to the date
             if (searchFromDb != null)
               {
-                  System.out.println("FUCKIN SEARCH EXISTS");
                 searchResultsManagedBean.setSearchResults(searchFromDb);
               } else
               {
@@ -208,9 +207,10 @@ public class SearchManagedBean
                         System.out.println("");
                         System.out.println("");
                       }
-                    //Insert into db
+                    //Insert results into db according to the search
 
-                    //Populate resultSearch (display)
+                    //Populate resultSearch (display) searchResultsManagedBean.setSearchResults(this.search);
+                    
                   } catch (IOException ex)
                   {
                     Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
