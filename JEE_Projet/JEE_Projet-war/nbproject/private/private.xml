@@ -12,11 +12,9 @@
         </group>
         <group>
             <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/web/index.xhtml</file>
-            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/SeqrchResultsManagedbean.java</file>
-            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/web/mailing.xhtml</file>
             <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/web/resources/js/main.js</file>
-            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/web/layout.xhtml</file>
-            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/SearchManagedBean.java</file>
+            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/UserManagedBean.java</file>
+            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-war/src/managedbean/CampaignManagedBean.java</file>
         </group>
     </open-files>
 </project-private>
