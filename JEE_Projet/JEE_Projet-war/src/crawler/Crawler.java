@@ -30,9 +30,9 @@ public class Crawler {
      
      final int levelSearch = 5;//Niveau de recherche dans l'arborescence des sites
      final int nbThreads =2;//Nombre de threads � utiliser      
-     final String keyword = "randonnée";
+     final String keyword = "Jacquie";
               
-      Search search = new Search(keyword,levelSearch);//Nouvelle recherche
+      SearchCrawler search = new SearchCrawler(keyword,levelSearch);      
       GoogleSearch googleEngine = new GoogleSearch(keyword);//Le moteur de recherche � utiliser
       System.out.println("Starting pool....");
       Pool pool = new Pool(search,googleEngine);//Construction du pool d'URLs � partir des r�sultats du moteur de recherche

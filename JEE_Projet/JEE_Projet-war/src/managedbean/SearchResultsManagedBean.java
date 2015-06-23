@@ -47,6 +47,7 @@ public class SearchResultsManagedBean
     public List<Searchresults> getSearchResults()
       {
         this.searchResults = searchManager.getResultsFromDataBase(searchSessionbean.getSearch());
+          System.out.println("FUCKING SEARCH RESULT : "+this.searchResults.toString());
         return this.searchResults;
       }
 

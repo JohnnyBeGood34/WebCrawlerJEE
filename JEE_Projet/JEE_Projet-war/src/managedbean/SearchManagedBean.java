@@ -8,12 +8,23 @@ package managedbean;
 import conf.Effectuer;
 import conf.Search;
 import conf.Searchresults;
+import crawler.Crawler;
+import crawler.Pool;
+import crawler.SearchCrawler;
+import crawler.Searcher;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import search.engine.api.GoogleSearch;
 import session.SearchManager;
 
 /**
@@ -89,11 +100,12 @@ public class SearchManagedBean
         this.deepLevel = null;
       }
 
-    public String getResultForSearch(Search idSearch){
+    public String getResultForSearch(Search idSearch)
+      {
         searchResultsManagedBean.setSearchResults(idSearch);
         return "searchDetails?faces-redirect=true";
-    }
-    
+      }
+
     public void createSearch()
       {
         if (loginbean.getCurrentUser() != null)
@@ -129,7 +141,7 @@ public class SearchManagedBean
                   {
                     this.search.setIsFr(false);
                   }
-
+                this.search.setDateSearch(new Date());
                 //Create
                 searchManager.createSearch(this.search);
 
@@ -146,15 +158,69 @@ public class SearchManagedBean
             //Here need to get results from database according to the date
             if (searchFromDb != null)
               {
+                  System.out.println("FUCKIN SEARCH EXISTS");
                 searchResultsManagedBean.setSearchResults(searchFromDb);
-              } 
-            else
+              } else
               {
-                //here need to lauch the scrapper
+                try
+                  {
+                    //here need to lauch the scrapper
+                    SearchCrawler searchCrawler = new SearchCrawler(this.search.getTherm(), this.search.getDeepLevel());
+                    GoogleSearch googleEngine = new GoogleSearch(this.search.getTherm());
+                    Pool pool = new Pool(searchCrawler, googleEngine);
+                    //Get results
+                    ArrayList<Searcher> searchers = new ArrayList<>();
+
+                    for (int i = 1; i <= 2; i++)
+                      {
+                        Searcher searcher = new Searcher(pool);
+                        searcher.start();
+                        searchers.add(searcher);
+
+                      }
+
+                    for (Searcher searcher : searchers)
+                      {
+                        try
+                          {
+                            searcher.join();
+                          } catch (InterruptedException ex)
+                          {
+                            Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
+                          }
+                      }
+                    HashMap<String, ArrayList<String>> results;
+                    results = searchCrawler.getMails();
+
+                    System.out.println("");
+                    System.out.println("");
+                    for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
+                      {
+
+                        ArrayList<String> mails = entry.getValue();
+                        System.out.println("Nombre de résultats pour le  site  " + entry.getKey() + "  : " + mails.size());
+
+                        System.out.println("************Emails trouv�s***************");
+                        for (String mail : mails)
+                          {
+                            System.out.println(mail);
+                          }
+                        System.out.println("");
+                        System.out.println("");
+                      }
+                    //Insert into db
+
+                    //Populate resultSearch (display)
+                  } catch (IOException ex)
+                  {
+                    Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                  }
               }
           } else
           {
             //here need to lauch the scrapper and show results
+            //Get results
+            //Populate resultSearch (display)
           }
 
       }

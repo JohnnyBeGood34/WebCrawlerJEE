@@ -8,7 +8,7 @@ import java.util.HashMap;
  * Class representing a search made by the user
  * @author Stef
  */
-public class Search {
+public class SearchCrawler {
     
     /**
      * The depth level of the search in the tree of the site
@@ -37,7 +37,7 @@ public class Search {
      * @param keyword The keyword of the search
      * @param level The depth level
      */
-    public Search(String keyword,int level){
+    public SearchCrawler(String keyword,int level){
         this.level=level;
         this.keyword=keyword;
         mails=new HashMap<>();

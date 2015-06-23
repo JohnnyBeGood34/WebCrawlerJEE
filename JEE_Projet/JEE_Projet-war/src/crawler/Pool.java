@@ -31,14 +31,14 @@ public class Pool {
     /**
      * Object representing a search made by the user
      */
-    private final Search search;
+    private final SearchCrawler search;
     
     /**
      * Constructor 
      * @param search A search with keyword and level search
      * @throws IOException 
      */
-    public Pool(Search search,SearchEngine engine) throws IOException{
+    public Pool(SearchCrawler search,SearchEngine engine) throws IOException{
         this.searchEngine =  engine;
         listeUrls = searchEngine.findUrls();
         System.out.println("********************");

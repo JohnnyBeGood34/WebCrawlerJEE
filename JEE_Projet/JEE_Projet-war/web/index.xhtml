@@ -60,7 +60,7 @@
                 <h3 style='text-align: center;'>Résultats</h3>
                 <hr/>
                 <f:view>
-                    <h:form rendered="#{searchResultsManagedBean.searchResults.size() >1}">
+                    <h:form rendered="#{searchResultsManagedBean.searchResults.size() >0}">
                         <h:dataTable value="#{searchResultsManagedBean.searchResults}" var="item" class="table">
                             <h:column>
                                 <f:facet name="header">
