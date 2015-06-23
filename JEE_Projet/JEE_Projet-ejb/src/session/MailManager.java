@@ -6,8 +6,10 @@
 package session;
 
 import conf.Mail;
+import conf.Search;
 import java.util.List;
 import javax.ejb.LocalBean;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,31 +22,37 @@ import org.apache.commons.mail.*;
  */
 @Stateless
 @LocalBean
-public class MailManager {
-    
+public class MailManager
+  {
+
     @PersistenceContext(unitName = "JEE_Projet-ejbPU")
     private EntityManager em;
 
-    public void persist(Object object) {
+    public void persist(Object object)
+      {
         em.persist(object);
-    }
+      }
 
-   public List<Mail> getAllMails(){
-       Query request =em.createNamedQuery("Mail.findAll");
-       return request.getResultList();
-   }
-   
-   /*
-   Permet d'obtenir tous les mails non distribués
-   @return List<Mail> La liste de tous les mails non distribués
-   */
-   public List<Mail> getMailsNonDistributed(){
-       Query request = em.createNamedQuery("Mail.findByDistributed");
-       request.setParameter("distributed",false);
-     return  request.getResultList();
-   }
-   
-   public void sendMail(Email email){
-       
-   }
-}
+    public List<Mail> getAllMails()
+      {
+        Query request = em.createNamedQuery("Mail.findAll");
+        return request.getResultList();
+      }
+
+    /*
+     Permet d'obtenir tous les mails non distribués
+     @return List<Mail> La liste de tous les mails non distribués
+     */
+    public List<Mail> getMailsNonDistributed()
+      {
+        Query request = em.createNamedQuery("Mail.findByDistributed");
+        request.setParameter("distributed", false);
+        return request.getResultList();
+      }
+    
+    @Schedule(minute="*/10", hour="*")
+    public void sendMail(Search aSearch)
+      {
+            
+      }
+  }

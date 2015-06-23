@@ -41,7 +41,9 @@ public class SearchResultsManagedBean
     }
     
     public void updateAllIsInCampaign(){
-        
+        for(Searchresults result : this.searchResults){
+            searchManager.updateIsInCampaign(result);
+        }
     }
     
     public List<Searchresults> getSearchResults()
