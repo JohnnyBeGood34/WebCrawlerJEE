@@ -36,7 +36,19 @@ public class CampaignManagedBean
     @Inject
     SearchManagedSessionBean searchManagedSessionBean;
     private MailingCampaign mailingCampaign;
+    
+    private Mail mailForCampaign;
 
+    public Mail getMailForCampaign()
+      {
+        return campaignManager.getMailForCampaign(campaignBean.getMailingCampaign());
+      }
+
+    public void setMailForCampaign(Mail mailForCampaign)
+      {
+        this.mailForCampaign = mailForCampaign;
+      }
+    
     @EJB
     CompaignManager campaignManager;
 
@@ -53,6 +65,8 @@ public class CampaignManagedBean
         return "mailingPersonnalization?faces-redirect=true";
       }
 
+  
+    
     /**
      * Get all campaigns fo main user
      *

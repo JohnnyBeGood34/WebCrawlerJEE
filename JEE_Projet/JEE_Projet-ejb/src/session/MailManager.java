@@ -5,6 +5,7 @@
  */
 package session;
 
+import conf.FaitReference;
 import conf.File;
 import conf.Mail;
 import conf.MailingCampaign;
@@ -40,6 +41,8 @@ public class MailManager
         em.persist(object);
       }
 
+    
+    
     public List<Mail> getAllMails()
       {
         Query request = em.createNamedQuery("Mail.findAll");
@@ -63,5 +66,9 @@ public class MailManager
     
     public void createFile(File file){
         em.persist(file);
+    }
+    
+    public void createFaitReference(FaitReference reference){
+        em.persist(reference);
     }
   }

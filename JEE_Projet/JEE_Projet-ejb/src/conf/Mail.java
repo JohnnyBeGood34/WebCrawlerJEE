@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mail.findByObjet", query = "SELECT m FROM Mail m WHERE m.objet = :objet"),
     @NamedQuery(name = "Mail.findByDistributed", query = "SELECT m FROM Mail m WHERE m.distributed = :distributed"),
     @NamedQuery(name = "Mail.findByStatut", query = "SELECT m FROM Mail m WHERE m.statut = :statut"),
-    @NamedQuery(name = "Mail.findByMailjetId", query = "SELECT m FROM Mail m WHERE m.mailjetId = :mailjetId")
+    @NamedQuery(name = "Mail.findByMailjetId", query = "SELECT m FROM Mail m WHERE m.mailjetId = :mailjetId"),
+    @NamedQuery(name = "Mail.findByCampaignId", query = "SELECT m FROM Mail m WHERE m.campaignId = :campaignId")
   })
 public class Mail implements Serializable
   {

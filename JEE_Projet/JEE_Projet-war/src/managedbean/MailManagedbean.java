@@ -5,8 +5,10 @@
  */
 package managedbean;
 
+import conf.FaitReference;
 import conf.File;
 import conf.Mail;
+import conf.Searchresults;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.MessagingException;
 import javax.servlet.http.Part;
+import session.CompaignManager;
 import session.MailManager;
 
 /**
@@ -46,7 +49,8 @@ public class MailManagedbean
     CampaignSessionbean campaignSessionbean;
     @EJB
     MailManager mailManager;
-
+    
+    private CompaignManager campaignManager;
     public Part getFileToUpload()
       {
         return fileToUpload;
@@ -108,8 +112,16 @@ public class MailManagedbean
                 Logger.getLogger(MailManagedbean.class.getName()).log(Level.SEVERE, null, ex);
               }
         }
-        
-        //here send mails
+        //Add all results and mail link
+        //Get search results for campaign
+        List<Searchresults> resultsForCamapaign = campaignManager.getAllResultsForCampaign(campaignSessionbean.getMailingCampaign());
+        for(Searchresults sr : resultsForCamapaign){
+            FaitReference reference = new FaitReference();
+            reference.setDistributed(false);
+            reference.setIdMail(mail);
+            reference.setIdSearchResult(sr);
+            mailManager.createFaitReference(reference);
+        }
         
         //GOTO mailingresume
         return "mailingResume";

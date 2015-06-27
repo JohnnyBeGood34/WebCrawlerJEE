@@ -8,6 +8,22 @@
 
     <ui:define name="content">
         <h1 style="text-align: center;">Détail de la campagne <h:outputText value="#{campaignSessionbean.mailingCampaign.getTitle()}"/></h1>
-        
+        <h2 style="text-align:center;">Mail</h2>
+        <hr/>
+        <f:view>
+
+
+            <h:form>
+                <h1><h:outputText value="Create/Edit"/></h1>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Objet:" for="objet" />
+                    <h:inputText id="objet" value="#{campaignManagedBean.mailForCampaign.objet}" title="Objet" />
+                    <h:outputLabel value="Message:" for="message" />
+                    <h:inputTextarea rows="4" cols="30" id="message" value="#{campaignManagedBean.mailForCampaign.message}" title="Message" required="true" requiredMessage="The Message field is required."/>
+
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
     </ui:define>
 </ui:composition>
