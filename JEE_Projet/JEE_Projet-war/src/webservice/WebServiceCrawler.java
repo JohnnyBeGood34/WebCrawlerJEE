@@ -8,8 +8,6 @@ package webservice;
 
 import crawler.CrawlerManager;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -23,24 +21,14 @@ import javax.jws.WebParam;
 public class WebServiceCrawler {
 
     /**
-     * This is a sample web service operation
-     * @param txt
-     * @return 
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
-    
-    /**
      * Web service operation
      * @param inputSearch
      * @param deepLevel
-     * @return
-     * @throws java.io.IOException
+     * @return 
+     * @throws java.io.IOException 
      */
     @WebMethod(operationName = "getResultFromSearchCrawler")
-    public List<String> getResultFromSearchCrawler(String inputSearch, int deepLevel) throws IOException{
+    public List<String> getResultFromSearchCrawler(@WebParam(name = "inputSearch") String inputSearch, @WebParam(name = "deepLevel") int deepLevel) throws IOException {
         CrawlerManager result = new CrawlerManager(inputSearch, deepLevel);
         List<String> resultListEmailsFromSearch;
         resultListEmailsFromSearch = result.getResultFromSearchCrawler();
