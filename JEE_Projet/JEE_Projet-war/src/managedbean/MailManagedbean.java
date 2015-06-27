@@ -107,7 +107,8 @@ public class MailManagedbean
                 this.file.setPath(path+"\\"+getFilename(fileToUpload));
                 
                 mailManager.createFile(file);
-              } catch (IOException ex)
+              }
+            catch (IOException ex)
               {
                 Logger.getLogger(MailManagedbean.class.getName()).log(Level.SEVERE, null, ex);
               }
