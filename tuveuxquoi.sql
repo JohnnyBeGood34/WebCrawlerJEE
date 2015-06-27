@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 19 Juin 2015 à 16:24
+-- Généré le :  Sam 27 Juin 2015 à 16:19
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `fait_reference` (
   `ID_ROW_RESULT` int(11) NOT NULL AUTO_INCREMENT,
   `ID_SEARCH_RESULT` int(11) DEFAULT NULL,
   `ID_MAIL` int(11) DEFAULT NULL,
+  `DISTRIBUTED` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID_ROW_RESULT`),
   KEY `id_row_result` (`ID_ROW_RESULT`),
   KEY `ID_SEARCH_RESULT` (`ID_SEARCH_RESULT`),
@@ -92,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `fait_reference` (
 -- Contenu de la table `fait_reference`
 --
 
-INSERT INTO `fait_reference` (`ID_ROW_RESULT`, `ID_SEARCH_RESULT`, `ID_MAIL`) VALUES
-(1, 2, 1);
+INSERT INTO `fait_reference` (`ID_ROW_RESULT`, `ID_SEARCH_RESULT`, `ID_MAIL`, `DISTRIBUTED`) VALUES
+(1, 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -109,7 +110,14 @@ CREATE TABLE IF NOT EXISTS `file` (
   PRIMARY KEY (`ID_FILE`),
   KEY `ID_MAIL` (`ID_MAIL`),
   KEY `ID_MAIL_2` (`ID_MAIL`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `file`
+--
+
+INSERT INTO `file` (`ID_FILE`, `ID_MAIL`, `PATH`, `IS_IN_BODY`) VALUES
+(1, 2, 'C:\\tmp\\img\\1.JPG', 0);
 
 -- --------------------------------------------------------
 
@@ -124,16 +132,19 @@ CREATE TABLE IF NOT EXISTS `mail` (
   `DISTRIBUTED` tinyint(1) DEFAULT NULL,
   `STATUT` varchar(40) DEFAULT NULL,
   `MAILJET_ID` int(11) DEFAULT NULL,
+  `CAMPAIGN_ID` int(11) NOT NULL,
   PRIMARY KEY (`ID_MAIL`),
-  KEY `ID_MAIL` (`ID_MAIL`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  KEY `ID_MAIL` (`ID_MAIL`),
+  KEY `CAMPAIGN_ID` (`CAMPAIGN_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `mail`
 --
 
-INSERT INTO `mail` (`ID_MAIL`, `OBJET`, `MESSAGE`, `DISTRIBUTED`, `STATUT`, `MAILJET_ID`) VALUES
-(1, 'Un objet de test', 'Salut ça va? je suis un mail factisse', 1, 'Delivered', NULL);
+INSERT INTO `mail` (`ID_MAIL`, `OBJET`, `MESSAGE`, `DISTRIBUTED`, `STATUT`, `MAILJET_ID`, `CAMPAIGN_ID`) VALUES
+(1, 'Un objet de test', 'Salut ça va? je suis un mail factisse', 1, 'Delivered', NULL, 0),
+(2, 'Mailing de masse mon pooooate', '<p style="text-align: center;">lkhjlkhlkjlkj</p>', 0, 'undelivered', NULL, 9);
 
 -- --------------------------------------------------------
 
@@ -150,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `mailing_campaign` (
   `ID_SEARCH` int(11) NOT NULL,
   PRIMARY KEY (`ID_MAILING`),
   KEY `ID_MAILING` (`ID_MAILING`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Contenu de la table `mailing_campaign`
@@ -163,7 +174,9 @@ INSERT INTO `mailing_campaign` (`ID_MAILING`, `ID_USER`, `TITLE`, `LANGUE`, `DAT
 (4, 2, 'Campagne', 'Fr', '2015-06-02', 0),
 (5, 2, 'TESTTESTTEST', 'Fr', '2015-06-16', 0),
 (6, 2, 'Campagne de test date', 'Fr', '2015-06-16', 0),
-(7, 2, 'Campagn linkÃ© avec search', 'Fr', '2015-06-18', 4);
+(7, 2, 'Campagn linkÃ© avec search', 'Fr', '2015-06-18', 4),
+(8, 2, 'Campagne test mail YEYEYEYEYE', 'Fr', '2015-06-27', 4),
+(9, 2, 'Campagne test mail YEYEYEYEYE', 'Fr', '2015-06-27', 4);
 
 -- --------------------------------------------------------
 
