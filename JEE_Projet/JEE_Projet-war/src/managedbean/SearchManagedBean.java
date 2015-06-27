@@ -13,6 +13,9 @@ import crawler.Pool;
 import crawler.SearchCrawler;
 import crawler.Searcher;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,6 +114,7 @@ public class SearchManagedBean
         if (loginbean.getCurrentUser() != null)
           {
             Search searchFromDb = null;
+            System.out.println("FUCKING THERM : " + this.search.getTherm());
             boolean searchExists = searchManager.testSearchExistanceByTherm(this.search.getTherm());
             if (searchExists)
               {
@@ -142,6 +146,7 @@ public class SearchManagedBean
                     this.search.setIsFr(false);
                   }
                 this.search.setDateSearch(new Date());
+
                 //Create
                 searchManager.createSearch(this.search);
 
@@ -161,60 +166,60 @@ public class SearchManagedBean
                 searchResultsManagedBean.setSearchResults(searchFromDb);
               } else
               {
-                try
-                  {
-                    //here need to lauch the scrapper
-                    SearchCrawler searchCrawler = new SearchCrawler(this.search.getTherm(), this.search.getDeepLevel());
-                    GoogleSearch googleEngine = new GoogleSearch(this.search.getTherm());
-                    Pool pool = new Pool(searchCrawler, googleEngine);
-                    //Get results
-                    ArrayList<Searcher> searchers = new ArrayList<>();
+                /*try
+                 {
+                 //here need to lauch the scrapper
+                 SearchCrawler searchCrawler = new SearchCrawler(this.search.getTherm(), this.search.getDeepLevel());
+                 GoogleSearch googleEngine = new GoogleSearch(this.search.getTherm());
+                 Pool pool = new Pool(searchCrawler, googleEngine);
+                 //Get results
+                 ArrayList<Searcher> searchers = new ArrayList<>();
 
-                    for (int i = 1; i <= 2; i++)
-                      {
-                        Searcher searcher = new Searcher(pool);
-                        searcher.start();
-                        searchers.add(searcher);
+                 for (int i = 1; i <= 2; i++)
+                 {
+                 Searcher searcher = new Searcher(pool);
+                 searcher.start();
+                 searchers.add(searcher);
 
-                      }
+                 }
 
-                    for (Searcher searcher : searchers)
-                      {
-                        try
-                          {
-                            searcher.join();
-                          } catch (InterruptedException ex)
-                          {
-                            Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
-                          }
-                      }
-                    HashMap<String, ArrayList<String>> results;
-                    results = searchCrawler.getMails();
+                 for (Searcher searcher : searchers)
+                 {
+                 try
+                 {
+                 searcher.join();
+                 } catch (InterruptedException ex)
+                 {
+                 Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+                 }
+                 HashMap<String, ArrayList<String>> results;
+                 results = searchCrawler.getMails();
 
-                    System.out.println("");
-                    System.out.println("");
-                    for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
-                      {
+                 System.out.println("");
+                 System.out.println("");
+                 for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
+                 {
 
-                        ArrayList<String> mails = entry.getValue();
-                        System.out.println("Nombre de résultats pour le  site  " + entry.getKey() + "  : " + mails.size());
+                 ArrayList<String> mails = entry.getValue();
+                 System.out.println("Nombre de résultats pour le  site  " + entry.getKey() + "  : " + mails.size());
 
-                        System.out.println("************Emails trouv�s***************");
-                        for (String mail : mails)
-                          {
-                            System.out.println(mail);
-                          }
-                        System.out.println("");
-                        System.out.println("");
-                      }
-                    //Insert results into db according to the search
+                 System.out.println("************Emails trouv�s***************");
+                 for (String mail : mails)
+                 {
+                 System.out.println(mail);
+                 }
+                 System.out.println("");
+                 System.out.println("");
+                 }
+                 //Insert results into db according to the search
 
-                    //Populate resultSearch (display) searchResultsManagedBean.setSearchResults(this.search);
+                 //Populate resultSearch (display) searchResultsManagedBean.setSearchResults(this.search);
                     
-                  } catch (IOException ex)
-                  {
-                    Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-                  }
+                 } catch (IOException ex)
+                 {
+                 Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                 }*/
               }
           } else
           {

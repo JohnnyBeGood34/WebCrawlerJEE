@@ -5,7 +5,10 @@
  */
 package session;
 
+import conf.FaitReference;
 import conf.MailingCampaign;
+import conf.Search;
+import conf.Searchresults;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -53,4 +56,14 @@ public class CompaignManager {
         Query request = em.createNamedQuery("MailingCampaign.findAll");
         return request.getResultList();
     }
+    
+    public List<Searchresults> getAllResultsForCampaign(MailingCampaign aCampaign){
+        Query request = em.createNamedQuery("Searchresults.findByIdSearch");
+        request.setParameter("idSearch",aCampaign);
+        return request.getResultList();
+    }
+    
+    /*public List<FaitReference> getAllMailForCampaign(){
+        
+    }*/
 }

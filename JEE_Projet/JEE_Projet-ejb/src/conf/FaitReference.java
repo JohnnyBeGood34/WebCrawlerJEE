@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package conf;
 
 import java.io.Serializable;
@@ -17,86 +18,124 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Stef
+ * @author JOHN
  */
 @Entity
 @Table(name = "fait_reference")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+  {
     @NamedQuery(name = "FaitReference.findAll", query = "SELECT f FROM FaitReference f"),
-    @NamedQuery(name = "FaitReference.findByIdRowResult", query = "SELECT f FROM FaitReference f WHERE f.idRowResult = :idRowResult")})
-public class FaitReference implements Serializable {
+    @NamedQuery(name = "FaitReference.findByIdRowResult", query = "SELECT f FROM FaitReference f WHERE f.idRowResult = :idRowResult"),
+    @NamedQuery(name = "FaitReference.findByDistributed", query = "SELECT f FROM FaitReference f WHERE f.distributed = :distributed")
+  })
+public class FaitReference implements Serializable
+  {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID_ROW_RESULT")
     private Integer idRowResult;
-    @JoinColumn(name = "ID_MAIL", referencedColumnName = "ID_MAIL")
-    @ManyToOne
-    private Mail idMail;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "DISTRIBUTED")
+    private boolean distributed;
     @JoinColumn(name = "ID_SEARCH_RESULT", referencedColumnName = "ID_SEARCH_RESULT")
     @ManyToOne
     private Searchresults idSearchResult;
+    @JoinColumn(name = "ID_MAIL", referencedColumnName = "ID_MAIL")
+    @ManyToOne
+    private Mail idMail;
 
-    public FaitReference() {
-    }
+    public FaitReference()
+      {
+      }
 
-    public FaitReference(Integer idRowResult) {
+    public FaitReference(Integer idRowResult)
+      {
         this.idRowResult = idRowResult;
-    }
+      }
 
-    public Integer getIdRowResult() {
+    public FaitReference(Integer idRowResult, boolean distributed)
+      {
+        this.idRowResult = idRowResult;
+        this.distributed = distributed;
+      }
+
+    public Integer getIdRowResult()
+      {
         return idRowResult;
-    }
+      }
 
-    public void setIdRowResult(Integer idRowResult) {
+    public void setIdRowResult(Integer idRowResult)
+      {
         this.idRowResult = idRowResult;
-    }
+      }
 
-    public Mail getIdMail() {
-        return idMail;
-    }
+    public boolean getDistributed()
+      {
+        return distributed;
+      }
 
-    public void setIdMail(Mail idMail) {
-        this.idMail = idMail;
-    }
+    public void setDistributed(boolean distributed)
+      {
+        this.distributed = distributed;
+      }
 
-    public Searchresults getIdSearchResult() {
+    public Searchresults getIdSearchResult()
+      {
         return idSearchResult;
-    }
+      }
 
-    public void setIdSearchResult(Searchresults idSearchResult) {
+    public void setIdSearchResult(Searchresults idSearchResult)
+      {
         this.idSearchResult = idSearchResult;
-    }
+      }
+
+    public Mail getIdMail()
+      {
+        return idMail;
+      }
+
+    public void setIdMail(Mail idMail)
+      {
+        this.idMail = idMail;
+      }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+      {
         int hash = 0;
         hash += (idRowResult != null ? idRowResult.hashCode() : 0);
         return hash;
-    }
+      }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+      {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FaitReference)) {
+        if (!(object instanceof FaitReference))
+          {
             return false;
-        }
+          }
         FaitReference other = (FaitReference) object;
-        if ((this.idRowResult == null && other.idRowResult != null) || (this.idRowResult != null && !this.idRowResult.equals(other.idRowResult))) {
+        if ((this.idRowResult == null && other.idRowResult != null) || (this.idRowResult != null && !this.idRowResult.equals(other.idRowResult)))
+          {
             return false;
-        }
+          }
         return true;
-    }
+      }
 
     @Override
-    public String toString() {
+    public String toString()
+      {
         return "conf.FaitReference[ idRowResult=" + idRowResult + " ]";
-    }
+      }
     
-}
+  }

@@ -20,12 +20,15 @@ import java.io.Serializable;
 public class CampaignSessionbean implements Serializable
   {
     private MailingCampaign mailingCampaign;
+    
     /**
      * Creates a new instance of CampaignSessionbean
      */
     public CampaignSessionbean()
       {
       }
+    
+    
     
     public MailingCampaign getMailingCampaign(){
         return mailingCampaign;

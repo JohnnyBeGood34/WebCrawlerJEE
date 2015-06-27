@@ -5,12 +5,15 @@
  */
 package session;
 
+import conf.File;
 import conf.Mail;
 import conf.MailingCampaign;
+import conf.Searchresults;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -24,10 +27,14 @@ import org.apache.commons.mail.*;
 @LocalBean
 public class MailManager
   {
-
     @PersistenceContext(unitName = "JEE_Projet-ejbPU")
     private EntityManager em;
-
+    private MailingCampaign campaign;
+    
+    public void setCampaign(MailingCampaign aCampaign){
+        this.campaign = aCampaign;
+    }
+    
     public void persist(Object object)
       {
         em.persist(object);
@@ -49,10 +56,12 @@ public class MailManager
         request.setParameter("distributed", false);
         return request.getResultList();
       }
+   
+    public void createMail(Mail mail){
+        em.persist(mail);
+    }
     
-    @Schedule(minute="*/10", hour="*")
-    public void sendMail(MailingCampaign aCampaign)
-      {
-            
-      }
+    public void createFile(File file){
+        em.persist(file);
+    }
   }

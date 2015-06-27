@@ -19,61 +19,64 @@ import search.engine.api.GoogleSearch;
  *
  * @author Stef
  */
-public class Crawler {
+public class Crawler
+  {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws MalformedURLException, IOException {
- 
+    public static void main(String[] args) throws MalformedURLException, IOException
+      {
 
-     
-     final int levelSearch = 5;//Niveau de recherche dans l'arborescence des sites
-     final int nbThreads =2;//Nombre de threads � utiliser      
-     final String keyword = "Jacquie";
-              
-      SearchCrawler search = new SearchCrawler(keyword,levelSearch);      
-      GoogleSearch googleEngine = new GoogleSearch(keyword);//Le moteur de recherche � utiliser
-      System.out.println("Starting pool....");
-      Pool pool = new Pool(search,googleEngine);//Construction du pool d'URLs � partir des r�sultats du moteur de recherche
-                        
-     ArrayList<Searcher> searchers = new ArrayList<>();
-     
-     for(int i=1;i<=nbThreads;i++){
-          Searcher searcher = new Searcher(pool);
-          searcher.start();
-          searchers.add(searcher);
-         
-     }
-     
-     for(Searcher searcher : searchers){
-          try {
-              searcher.join();
-          } catch (InterruptedException ex) {
-              Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
+        final int levelSearch = 5;//Niveau de recherche dans l'arborescence des sites
+        final int nbThreads = 2;//Nombre de threads � utiliser      
+        final String keyword = "Jacquie";
+
+        SearchCrawler search = new SearchCrawler(keyword, levelSearch);
+        GoogleSearch googleEngine = new GoogleSearch(keyword);//Le moteur de recherche � utiliser
+        System.out.println("Starting pool....");
+        Pool pool = new Pool(search, googleEngine);//Construction du pool d'URLs � partir des r�sultats du moteur de recherche
+
+        ArrayList<Searcher> searchers = new ArrayList<>();
+
+        for (int i = 1; i <= nbThreads; i++)
+          {
+            Searcher searcher = new Searcher(pool);
+            searcher.start();
+            searchers.add(searcher);
+
           }
-     }
-        HashMap<String,ArrayList<String>> results;
+
+        for (Searcher searcher : searchers)
+          {
+            try
+              {
+                searcher.join();
+              } catch (InterruptedException ex)
+              {
+                Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
+              }
+          }
+        HashMap<String, ArrayList<String>> results;
         results = search.getMails();
-        
-         System.out.println("");
-          System.out.println("");
-         for(Map.Entry<String,ArrayList<String>> entry : results.entrySet()){
-          
-          ArrayList<String> mails = entry.getValue();
-          System.out.println("Nombre de r�sultats pour le  site  "+entry.getKey()+"  : "+mails.size());
-          
-          System.out.println("************Emails trouv�s***************");
-          for(String mail : mails){
-              System.out.println(mail);
-          }
-          System.out.println("");
-          System.out.println("");
-      }
-        
-        
-        
-        
-    }
 
-}
+        System.out.println("");
+        System.out.println("");
+        for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
+          {
+
+            ArrayList<String> mails = entry.getValue();
+            System.out.println("Nombre de r�sultats pour le  site  " + entry.getKey() + "  : " + mails.size());
+
+            System.out.println("************Emails trouv�s***************");
+            for (String mail : mails)
+              {
+                System.out.println(mail);
+              }
+            System.out.println("");
+            System.out.println("");
+          }
+
+      }
+
+  }

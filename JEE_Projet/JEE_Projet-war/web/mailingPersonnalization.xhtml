@@ -40,16 +40,10 @@
                     <h:inputTextarea rows="15" class='form-control editable' cols="30" id="message" value="#{mailManagedbean.mail.message}" title="Message" required="true" requiredMessage="The Message field is required."/>
                 </div>
                 <div class='col-md-2'>
-                    <h:outputLabel value="Fichier:" for="path" />
+                    <h:outputLabel value="Attachment :" for="path" />
                 </div>
                 <div class='col-md-10 form-group'>
-                    <h:inputFile id="path" value="#{mailManagedbean.file.path}" title="Path"/>
-                </div>
-                <div class='col-md-2'>
-                    <h:outputLabel value="Mettre dans le corps du mail :" for="isInBody" />
-                </div>
-                <div class='col-md-10 form-group'>
-                    <h:selectBooleanCheckbox id="isInBody" value="#{mailManagedbean.file.isInBody}" title="IsInBody" />
+                    <h:inputFile id="path" value="#{mailManagedbean.fileToUpload}" title="Path" />
                 </div>
                 <div class='col-md-12'>
                     <h:commandButton action='#{mailManagedbean.createMail()}' class='btn btn-primary pull-right' value='Envoyer >>'/>

@@ -5,6 +5,7 @@
  */
 package managedbean;
 
+import conf.Mail;
 import conf.MailingCampaign;
 import conf.Searchresults;
 import java.util.ArrayList;
@@ -39,12 +40,16 @@ public class CampaignManagedBean
     @EJB
     CompaignManager campaignManager;
 
+   
+    
     public String creerCampagne()
       {
         mailingCampaign.setIdUser(loginbean.getCurrentUser().getIdUser());
         mailingCampaign.setDateEnvoi(new Date());
         mailingCampaign.setIdSearch(searchManagedSessionBean.getSearch().getIdSearch());
         campaignManager.createCampaign(mailingCampaign);
+        
+        campaignBean.setMailingcampaign(mailingCampaign);
         return "mailingPersonnalization?faces-redirect=true";
       }
 

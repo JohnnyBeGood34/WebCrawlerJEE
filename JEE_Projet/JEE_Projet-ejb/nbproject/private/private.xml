@@ -3,6 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Projets"/>
-        <group/>
+        <group>
+            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-ejb/src/session/CompaignManager.java</file>
+            <file>file:/A:/developpement/WebCrawlerJEE/JEE_Projet/JEE_Projet-ejb/src/session/MailManager.java</file>
+        </group>
     </open-files>
 </project-private>
