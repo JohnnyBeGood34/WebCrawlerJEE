@@ -4,7 +4,7 @@
 .mtj.tmp/
 
 # Package Files #
-#*.jar
+*.jar
 *.war
 *.ear
 
@@ -16,5 +16,7 @@ hs_err_pid*
 /JEE_Projet/JEE_Projet-ejb/build/
 /JEE_Projet/JEE_Projet-war/dist/
 /JEE_Projet/JEE_Projet-war/build/
+/JEE_Projet/JEE_Projet-war/nbproject/
+/JEE_Projet/JEE_Projet-ejb/nbproject/
 /JEE_Projet/nbproject/
 /JEE_Projet/JEE_Projet-war/nbproject/
