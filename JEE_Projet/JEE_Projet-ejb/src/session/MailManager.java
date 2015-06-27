@@ -6,7 +6,7 @@
 package session;
 
 import conf.Mail;
-import conf.Search;
+import conf.MailingCampaign;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
@@ -51,7 +51,7 @@ public class MailManager
       }
     
     @Schedule(minute="*/10", hour="*")
-    public void sendMail(Search aSearch)
+    public void sendMail(MailingCampaign aCampaign)
       {
             
       }
