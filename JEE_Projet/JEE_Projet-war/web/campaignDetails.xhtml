@@ -11,19 +11,48 @@
         <h2 style="text-align:center;">Mail</h2>
         <hr/>
         <f:view>
-
-
             <h:form>
-                <h1><h:outputText value="Create/Edit"/></h1>
-                <h:panelGrid columns="2">
+                <div class='col-md-2'>
                     <h:outputLabel value="Objet:" for="objet" />
-                    <h:inputText id="objet" value="#{campaignManagedBean.mailForCampaign.objet}" title="Objet" />
+                </div>
+                <div class='col-md-10 form-group'>
+                    <h:inputText class='form-control' id="objet" value="#{campaignManagedBean.mailForCampaign.objet}" title="Objet" />
+                </div>
+                <div class='col-md-2'>
                     <h:outputLabel value="Message:" for="message" />
-                    <h:inputTextarea rows="4" cols="30" id="message" value="#{campaignManagedBean.mailForCampaign.message}" title="Message" required="true" requiredMessage="The Message field is required."/>
+                </div>
+                <div class='col-md-10 form-group'>
+                    <h:inputTextarea class='form-control' rows="15" cols="30" id="message" value="#{campaignManagedBean.mailForCampaign.message}" title="Message" required="true" requiredMessage="The Message field is required."/>
+                </div>
 
-                </h:panelGrid>
+                <div class='col-md-2'>
+                    <h:outputLabel value="Attachment : " for="message" />
+                </div>
+                <div class="col-md-10">
+                    <h:commandLink value="Télécharger l'attachment" action="#{campaignManagedBean.downloadFile}" rendered="#{campaignManagedBean.mailFile != null}"></h:commandLink>
+                    <h:outputText value="Pas d'attachment pour ce mail" rendered="#{campaignManagedBean.mailFile == null}"/>
+                </div>
+            </h:form>
+            <hr/>
+            <h1 style='text-align:center;'>Résumé des mails</h1>
+            <h:form>
+                <h:dataTable value="#{mailManagedbean.listOfMail}" var="item" class='table'>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Mail"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idSearchResult.emailResult}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Distribué"/>
+                        </f:facet>
+                        <h:outputText value="Non distribué" rendered='#{!item.distributed}'/>
+                        <h:outputText value="Distribué" rendered='#{item.distributed}'/>
+                    </h:column>
+
+                </h:dataTable>
             </h:form>
         </f:view>
-
     </ui:define>
 </ui:composition>

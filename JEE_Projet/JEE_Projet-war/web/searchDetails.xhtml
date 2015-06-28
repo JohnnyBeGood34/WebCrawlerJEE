@@ -13,12 +13,6 @@
                 <h:dataTable value="#{searchResultsManagedBean.searchResults}" var="item" class="table">
                     <h:column>
                         <f:facet name="header">
-                            <input type="checkbox"/> <h:outputText value=" Tout cocher"/> 
-                        </f:facet>
-                        <input type="checkbox"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
                             <h:outputText value="Adresse trouvée"/>
                         </f:facet>
                         <h:outputText value="#{item.emailResult}"/>

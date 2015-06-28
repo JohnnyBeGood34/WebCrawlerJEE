@@ -36,7 +36,13 @@ public class CompaignManager
       {
         Query request = em.createNamedQuery("Mail.findByCampaignId");
         request.setParameter("campaignId", campaign);
-        return (Mail) request.getSingleResult();
+        if (request.getResultList().size() > 0)
+          {
+            return (Mail) request.getSingleResult();
+          } else
+          {
+            return null;
+          }
       }
 
     public void createCampaign(MailingCampaign campaign)
@@ -75,9 +81,14 @@ public class CompaignManager
 
     public List<Searchresults> getAllResultsForCampaign(MailingCampaign aCampaign)
       {
+        List listToReturn = null;
+        Search campaignSearch = new Search(aCampaign.getIdSearch());
         Query request = em.createNamedQuery("Searchresults.findByIdSearch");
-        request.setParameter("idSearch", aCampaign);
-        return request.getResultList();
+        request.setParameter("idSearch", campaignSearch);
+        if(request.getResultList().size() > 0){
+            listToReturn = request.getResultList();
+        }
+        return listToReturn;
       }
 
     /*public List<FaitReference> getAllMailForCampaign(){

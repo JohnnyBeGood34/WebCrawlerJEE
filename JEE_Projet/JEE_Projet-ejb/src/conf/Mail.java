@@ -48,7 +48,7 @@ public class Mail implements Serializable
     @Basic(optional = false)
     @Column(name = "ID_MAIL")
     private Integer idMail;
-    @Size(max = 40)
+    @Size(max = 255)
     @Column(name = "OBJET")
     private String objet;
     @Basic(optional = false)

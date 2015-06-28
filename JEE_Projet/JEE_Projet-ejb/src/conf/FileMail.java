@@ -27,12 +27,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "file")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "File.findAll", query = "SELECT f FROM File f"),
-    @NamedQuery(name = "File.findByIdFile", query = "SELECT f FROM File f WHERE f.idFile = :idFile"),
-    @NamedQuery(name = "File.findByPath", query = "SELECT f FROM File f WHERE f.path = :path"),
-    @NamedQuery(name = "File.findByIsInBody", query = "SELECT f FROM File f WHERE f.isInBody = :isInBody")})
-public class File implements Serializable {
+@NamedQueries(
+  {
+    @NamedQuery(name = "File.findAll", query = "SELECT f FROM FileMail f"),
+    @NamedQuery(name = "File.findByIdFile", query = "SELECT f FROM FileMail f WHERE f.idFile = :idFile"),
+    @NamedQuery(name = "File.findByPath", query = "SELECT f FROM FileMail f WHERE f.path = :path"),
+    @NamedQuery(name = "File.findByIsInBody", query = "SELECT f FROM FileMail f WHERE f.isInBody = :isInBody"),
+    @NamedQuery(name = "File.finByIdMail", query = "SELECT f FROM FileMail f WHERE f.idMail = :idMail")
+  })
+public class FileMail implements Serializable
+  {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,68 +53,83 @@ public class File implements Serializable {
     @ManyToOne
     private Mail idMail;
 
-    public File() {
-    }
+    public FileMail()
+      {
+      }
 
-    public File(Integer idFile) {
+    public FileMail(Integer idFile)
+      {
         this.idFile = idFile;
-    }
+      }
 
-    public Integer getIdFile() {
+    public Integer getIdFile()
+      {
         return idFile;
-    }
+      }
 
-    public void setIdFile(Integer idFile) {
+    public void setIdFile(Integer idFile)
+      {
         this.idFile = idFile;
-    }
+      }
 
-    public String getPath() {
+    public String getPath()
+      {
         return path;
-    }
+      }
 
-    public void setPath(String path) {
+    public void setPath(String path)
+      {
         this.path = path;
-    }
+      }
 
-    public Boolean getIsInBody() {
+    public Boolean getIsInBody()
+      {
         return isInBody;
-    }
+      }
 
-    public void setIsInBody(Boolean isInBody) {
+    public void setIsInBody(Boolean isInBody)
+      {
         this.isInBody = isInBody;
-    }
+      }
 
-    public Mail getIdMail() {
+    public Mail getIdMail()
+      {
         return idMail;
-    }
+      }
 
-    public void setIdMail(Mail idMail) {
+    public void setIdMail(Mail idMail)
+      {
         this.idMail = idMail;
-    }
+      }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+      {
         int hash = 0;
         hash += (idFile != null ? idFile.hashCode() : 0);
         return hash;
-    }
+      }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+      {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof File)) {
+        if (!(object instanceof FileMail))
+          {
             return false;
-        }
-        File other = (File) object;
-        if ((this.idFile == null && other.idFile != null) || (this.idFile != null && !this.idFile.equals(other.idFile))) {
+          }
+        FileMail other = (FileMail) object;
+        if ((this.idFile == null && other.idFile != null) || (this.idFile != null && !this.idFile.equals(other.idFile)))
+          {
             return false;
-        }
+          }
         return true;
-    }
+      }
 
     @Override
-    public String toString() {
+    public String toString()
+      {
         return "conf.File[ idFile=" + idFile + " ]";
-    }
-    
-}
+      }
+
+  }
