@@ -5,6 +5,7 @@
  */
 package search.engine.api;
 
+import crawler.ResultSearch;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,12 +29,15 @@ public class GoogleSearch implements SearchEngine{
     /**
      * The keyword used to make the search
      */
-    String keySearch;
+    private final String keySearch;
     
+    private final String ENGINE_NAME = "GOOGLE";
     
     public GoogleSearch(String keySearch) throws IOException{
-       this.keySearch=keySearch;
+       this.keySearch=keySearch.replace(" ", "%20");
     }
+    
+    
     
     /**
      * 
@@ -68,17 +72,24 @@ public class GoogleSearch implements SearchEngine{
      * @return The list of URLs (with format : http://www.example.com/path/to/something ) found by the Google API
      * @throws IOException 
      */
-    public ArrayList<String> findUrls() throws IOException{
-        ArrayList<String> urls= new ArrayList<>();
+    @Override
+    public ArrayList<ResultSearch> findUrls() throws IOException{
+        ArrayList<ResultSearch> urls= new ArrayList<>();
         JSONObject resultApi = getResultApi();
         JSONObject data = (JSONObject)resultApi.get("responseData");
         JSONArray results = (JSONArray)data.get("entries");
         
          for(int i = 0 ;i<results.length();i++){
-            JSONObject result = (JSONObject)results.get(i);
-            urls.add(result.getString("url"));
+            JSONObject resultEngine = (JSONObject)results.get(i);
+            ResultSearch resultSearch = new ResultSearch(resultEngine.getString("url"),1);
+            urls.add(resultSearch);
         }
         return urls;
+    }
+
+    @Override
+    public String getNameEngine() {
+        return ENGINE_NAME;
     }
  
 }

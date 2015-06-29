@@ -28,8 +28,9 @@ public class WebServiceCrawler {
      * @throws java.io.IOException 
      */
     @WebMethod(operationName = "getResultFromSearchCrawler")
-    public List<String> getResultFromSearchCrawler(@WebParam(name = "inputSearch") String inputSearch, @WebParam(name = "deepLevel") int deepLevel) throws IOException {
-        CrawlerManager result = new CrawlerManager(inputSearch, deepLevel);
+    public List<String> getResultFromSearchCrawler(@WebParam(name = "inputSearch") String inputSearch,
+            @WebParam(name = "deepLevel") int deepLevel, @WebParam(name = "limit") int limit) throws IOException {
+        CrawlerManager result = new CrawlerManager(inputSearch, deepLevel,limit);
         List<String> resultListEmailsFromSearch;
         resultListEmailsFromSearch = result.getResultFromSearchCrawler();
         return resultListEmailsFromSearch;

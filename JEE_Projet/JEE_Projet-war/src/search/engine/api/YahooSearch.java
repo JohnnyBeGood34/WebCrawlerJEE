@@ -5,6 +5,7 @@
  */
 package search.engine.api;
 
+import crawler.ResultSearch;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -16,14 +17,21 @@ import org.json.JSONObject;
  */
 public class YahooSearch implements SearchEngine{
 
+     private final String ENGINE_NAME = "YAHOO";
+    
     @Override
     public JSONObject getResultApi() throws MalformedURLException, IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<String> findUrls() throws IOException {
+    public ArrayList<ResultSearch> findUrls() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getNameEngine() {
+       return ENGINE_NAME;
     }
 
    

@@ -5,6 +5,7 @@
  */
 package search.engine.api;
 
+import crawler.ResultSearch;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -18,6 +19,6 @@ public interface SearchEngine {
         
          
          public JSONObject  getResultApi()throws MalformedURLException, IOException;        
-          public ArrayList<String> findUrls() throws IOException;
-    
+          public ArrayList<ResultSearch> findUrls() throws IOException;
+           public String getNameEngine();
 }

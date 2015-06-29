@@ -1,9 +1,11 @@
 
 package crawler;
 
-import search.engine.api.GoogleSearch;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import search.engine.api.SearchEngine;
 
 /**
@@ -15,12 +17,12 @@ public class Pool {
     /**
      * List of URLs found from the search and not processed yet
      */
-    private ArrayList<String> listeUrls;
+    private final ArrayList<ResultSearch> results;
     
     /**
      * List of URLs found and already processed
      */
-    private ArrayList<String> urlsAlreadyTreated;
+    private final ArrayList<String> urlsAlreadyTreated;
     
     /**
      * Object of implementing the Interface SearchEngine and representing 
@@ -28,35 +30,37 @@ public class Pool {
      */
     private SearchEngine searchEngine;
     
-    /**
-     * Object representing a search made by the user
-     */
-    private final SearchCrawler search;
+    
+   
     
     /**
      * Constructor 
-     * @param search A search with keyword and level search
+     * 
+     * @param engine An object implementing the SearchEngine interface
      * @throws IOException 
      */
-    public Pool(SearchCrawler search,SearchEngine engine) throws IOException{
+    public Pool(SearchEngine engine) throws IOException{
         this.searchEngine =  engine;
-        listeUrls = searchEngine.findUrls();
+        results = searchEngine.findUrls();
         System.out.println("********************");
-        for(String url:listeUrls) System.out.println("URL from Google : "+url);
+        for(ResultSearch result : results) System.out.println("URL from "+ engine.getNameEngine()+ ": "+result.getUrl());
          System.out.println("********************");
         urlsAlreadyTreated = new ArrayList();
-        this.search=search;
+        
     }
     
     /**
      * Method which adds an URL to the list 
-     * @param url 
+     * @param result
+     * 
      */
-    public void addUrl(String url){
-        if(!urlsAlreadyTreated.contains(url)){
-            System.out.println("Adding link to pool : "+url);
-            listeUrls.add(url);
+    public void addUrl(ResultSearch result){
+        
+        if(!urlsAlreadyTreated.contains(result.getUrl())){
+            System.out.println("Adding link to pool : "+result.getUrl());
+            results.add(result);
         }
+       
         
     }
     
@@ -70,8 +74,8 @@ public class Pool {
         this.searchEngine=engine;
     }
     
-    public ArrayList<String> getUrls(){
-        return listeUrls;
+    public ArrayList<ResultSearch> getUrls(){
+        return results;
     }
     
     /**
@@ -79,15 +83,16 @@ public class Pool {
      * is not empty
      * @return String An URL from the list
      */
-    public synchronized String tryGetUrl(){
-        String url="";
-        if(!listeUrls.isEmpty()){
-            url = listeUrls.get(0);
-            listeUrls.remove(0);
-            urlsAlreadyTreated.add(url);
+    public synchronized ResultSearch tryGetUrl(){
+        
+        ResultSearch result = null;
+        if(!results.isEmpty()){
+           result = results.get(0);
+            results.remove(0);
+            urlsAlreadyTreated.add(result.getUrl());
         }
                  
-        return url;
+        return result;
     }
     
     /**
@@ -100,27 +105,5 @@ public class Pool {
         return urlsAlreadyTreated.contains(url);
     }
     
-    /**
-     * Method to know the depth level for the current search
-     * @return The level of the current search
-     */
-    public int getLevelSearch(){
-        return search.getLevel();
-    }
-    
-    /**
-     * Method to know the limit number of the results to produce for the current search
-     * @return The limit number 
-     */
-    public int getLimitSearch(){
-        return search.getLimit();
-    }
-    
-    /**
-     * Method which adds an email found to the list of the current search
-     * @param email An email found in the document/page
-     */
-    public synchronized void addEmail(String email,String site){
-        search.addEmail(email,site);
-    }
+
 }

@@ -3,6 +3,7 @@ package crawler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class representing a search made by the user
@@ -30,7 +31,7 @@ public class SearchCrawler {
      * The results of the research : all mails found 
      * the different pages by website
      */
-    private HashMap<String,ArrayList<String>> mails;
+    private static HashMap<String,ArrayList<String>> mails;
     
     /**
      * 
@@ -41,6 +42,23 @@ public class SearchCrawler {
         this.level=level;
         this.keyword=keyword;
         mails=new HashMap<>();
+    }
+    
+    /**
+     * 
+     * @return the number of emails found for this search
+     */
+    public synchronized int size(){
+        
+        int size = 0;
+        
+        for (Map.Entry<String, ArrayList<String>> entry : mails.entrySet())
+          {
+            ArrayList<String> mailsBySite = entry.getValue();
+             
+            size+= mailsBySite.size();
+          }
+        return size;
     }
     
     /**
@@ -79,9 +97,12 @@ public class SearchCrawler {
         return mails;
     }
 
+    public void setLimit(int limit){
+        this.limit= limit;
+    }
     
     /**
-     * TODO 
+     * 
      * @return the limit 
      */
     public int getLimit(){
@@ -91,6 +112,7 @@ public class SearchCrawler {
     /**
      * Method to add an email found to the list
      * @param email An email found in a website page
+     * @param site
      */
     public  synchronized void addEmail(String email,String site){
         
@@ -98,9 +120,8 @@ public class SearchCrawler {
        
        if( results == null) results = new ArrayList<>();
        
-       if(results.contains(email)==false){
-           System.out.println("Adding email : "+ email);
-             mails.remove(results);
+       if(results.contains(email) == false && email.contains("noreply") == false){         
+            mails.remove(site);
            results.add(email);
            mails.put(site, results);
        }

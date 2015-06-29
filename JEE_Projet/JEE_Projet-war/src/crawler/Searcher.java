@@ -4,6 +4,8 @@ package crawler;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,29 +28,41 @@ public class Searcher extends Thread{
      */
     private final Pool poolUrls;
     
+    
+    /**
+     * Object representing a search made by the user
+     */
+    private final SearchCrawler search;
+    
+    
     /**
      * 
-     * @param poolUrls An object of type Pool
+     * @param poolUrls A pool of results
+     * @param search A new search
      */
-    public Searcher(Pool poolUrls){
+    public Searcher(Pool poolUrls,SearchCrawler search){
         this.poolUrls=poolUrls;
+        this.search=search;
     }
     
     /**
      * Method which analyze a HTML page with a given URL
-     * @param urlToSearch The url with following plain format : http://www.example.com/path/to/something
+     * @param result A result from the pool with an url having the following plain format : http://www.example.com/path/to/something
      * @throws MalformedURLException
      * @throws IOException 
      */
-    private void searchInPage(String urlToSearch) throws MalformedURLException, IOException {
+    private void searchInPage(ResultSearch result) throws MalformedURLException, IOException {
        
-       System.out.println("Thread nï¿½ "+ this.getId()+"  Analyzing ... "+urlToSearch);
+       System.out.println("Thread n° "+ this.getId()+"  Analyzing ... "+result.getUrl());
                
-        URL url = new URL(urlToSearch);
-        String domainName = url.getHost();
+        URL url = new URL(result.getUrl());
+         String domainName = url.getHost();
        
-        Document doc = Jsoup.connect(urlToSearch).get();
-        findLinksIntoPage(doc,domainName);
+         Document doc = Jsoup.connect(result.getUrl())
+                 .userAgent("Mozilla").timeout(3000)
+                 .get();
+                     
+        findLinksIntoPage(doc,domainName,result.getCurrentLevel());
         findEmailsIntoPage(doc,domainName);
     }
     
@@ -58,18 +72,21 @@ public class Searcher extends Thread{
      * @param domainName The domain name of the document we are scanning to save it in the pool
      * @throws MalformedURLException 
      */
-    private void findLinksIntoPage(Document dom ,String domainName) throws MalformedURLException{
+    private void findLinksIntoPage(Document dom ,String domainName,int currentLevelSearch) throws MalformedURLException{
           Elements links = dom.select("a");
         System.out.println("NB LINKS : "+links.size());
+        
         for(Element link:links){
-                
-           String urlFound = link.attr("href");                                                               
-            System.out.println("URL TO ADD : "+urlFound);
-            if(isUrlValid(urlFound,domainName)) { 
                
-                String urlToAdd = urlFound.contains("http") ? urlFound : "http://"+domainName+urlFound ;                                                                
+           String urlFound = link.attr("href");                                                                         
+            if(currentLevelSearch <= search.getLevel()) { 
                 
-                addUrl(urlToAdd);
+                  if (isUrlValid(urlFound,domainName)) {
+                      String url = urlFound.contains("http") ? urlFound : "http://"+domainName+urlFound ;
+                      int newLevel = currentLevelSearch++;
+                      ResultSearch newResult = new ResultSearch(url,newLevel);
+                      addUrl(newResult);
+                  }
                
             }
         }
@@ -83,17 +100,14 @@ public class Searcher extends Thread{
      * @throws MalformedURLException 
      */
     private boolean isUrlValid(String url,String domainName) throws MalformedURLException{
-        
-
-       int level = (url.contains("http")) ? url.split("/").length -2 : url.split("/").length-1;       
-       boolean hasDeeperLevel = level > this.poolUrls.getLevelSearch();// number of slash in relative path > number of slash wanted by level search
-        System.out.println("Level URL : "+level+"  "+this.poolUrls.getLevelSearch());
+                               
         return (url.contains("#")==false) // The link is not an anchor
                 && (url.equals("")==false) // The link is not empty
                 && (url.equals("/")==false) //The link is not just a slash                 
                 &&  (url.contains(domainName)) //The link must not lead to another website/domain               
-                && (poolUrls.hasAlreadyTreatedUrl(url) == false)//The link has not been processed yet
-                && (hasDeeperLevel==false);//The link has not a deeper level than the level search
+                && (poolUrls.hasAlreadyTreatedUrl(url) == false);//The link has not been processed yet
+                
+              
     }
     
     /**
@@ -107,35 +121,39 @@ public class Searcher extends Thread{
           String content=body.text();
           Matcher matcher = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(content);
           while(matcher.find()){             
-              poolUrls.addEmail(matcher.group(),site);
+              search.addEmail(matcher.group(),site);
           }                   
     }
     
     /**
-     * Main method of the thread : take an url from the pool and process it
+     * Main method of the thread : take a result from the pool and process it
      * while it can get one
      */
     @Override
      public void run(){
          
-        String url = poolUrls.tryGetUrl();
-        while(!url.equals("")){
+        ResultSearch result = poolUrls.tryGetUrl();
+        int emails_size = search.size();
+        
+        while(result != null && emails_size < search.getLimit()){
+            System.out.println("EMAILS FOUND : "+emails_size+"  SEARCH LIMIT : "+search.getLimit());
             try {
-               searchInPage(url);
+               searchInPage(result);
             } catch (IOException ex) {                
-                   // System.out.println("Probleme de connexion ou  url malformï¿½e : "+url);
+                    System.out.println("Probleme de connexion ou  url malformï¿½e : "+result.getUrl());
             }
-            url=poolUrls.tryGetUrl();
+            result=poolUrls.tryGetUrl();
+            emails_size = search.size();
         }
     }
     
     
     /**
-     * Method which adds an url to the pool
-     * @param url 
+     * Method which adds a result to the pool
+     * @param result A new result found to add to pool
      */ 
-    private  synchronized void addUrl(String url){
-        poolUrls.addUrl(url);
+    private  synchronized void addUrl(ResultSearch result){
+        poolUrls.addUrl(result);
     }
     
    

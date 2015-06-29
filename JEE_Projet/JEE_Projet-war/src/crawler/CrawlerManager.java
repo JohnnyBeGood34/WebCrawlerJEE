@@ -22,41 +22,44 @@ public class CrawlerManager {
 
     private final String _inputSearch;
     private final int _deepLevel;
-
-    public CrawlerManager(String inputSearch, int deepLevel) {
+    private final int NB_THREADS = 8;
+    private final int LIMIT;
+    
+    public CrawlerManager(String inputSearch, int deepLevel,int limit) {
         this._inputSearch = inputSearch;
         this._deepLevel = deepLevel;
+        LIMIT = limit;
     }
 
     public List<String> getResultFromSearchCrawler() throws IOException {
         List<String> resultListEmailsFromSearch = new ArrayList<>();
-        
-        int nbThreads = 2;//Nombre de threads � utiliser   
-
+                
         SearchCrawler search = new SearchCrawler(_inputSearch, _deepLevel);
+        search.setLimit(LIMIT);
         GoogleSearch googleEngine = new GoogleSearch(_inputSearch);//Le moteur de recherche � utiliser
-        Pool pool = new Pool(search, googleEngine);//Construction du pool d'URLs � partir des r�sultats du moteur de recherche
+        Pool pool = new Pool(googleEngine);//Construction du pool d'URLs � partir des r�sultats du moteur de recherche
 
         ArrayList<Searcher> searchers = new ArrayList<>();
 
-        for (int i = 1; i <= nbThreads; i++) {
-            Searcher searcher = new Searcher(pool);
+        for (int i = 1; i <= NB_THREADS; i++) {
+            Searcher searcher = new Searcher(pool,search);
+            
             searcher.start();
             searchers.add(searcher);
         }
 
         for (Searcher searcher : searchers) {
+            
             try {
                 searcher.join();
             } catch (InterruptedException ex) {
-                Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CrawlerManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+          
         }
         HashMap<String, ArrayList<String>> results;
         results = search.getMails();
 
-        System.out.println("");
-        System.out.println("");
         for (Map.Entry<String, ArrayList<String>> entry : results.entrySet()) {
 
             ArrayList<String> mails = entry.getValue();

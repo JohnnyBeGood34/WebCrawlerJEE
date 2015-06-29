@@ -7,13 +7,7 @@ package crawler;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import search.engine.api.GoogleSearch;
+import java.util.List;
 
 /**
  *
@@ -25,58 +19,31 @@ public class Crawler
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws MalformedURLException, IOException
+    public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException
       {
 
-        final int levelSearch = 5;//Niveau de recherche dans l'arborescence des sites
-        final int nbThreads = 2;//Nombre de threads ï¿½ utiliser      
-        final String keyword = "Jacquie";
 
-        SearchCrawler search = new SearchCrawler(keyword, levelSearch);
-        GoogleSearch googleEngine = new GoogleSearch(keyword);//Le moteur de recherche ï¿½ utiliser
-        System.out.println("Starting pool....");
-        Pool pool = new Pool(search, googleEngine);//Construction du pool d'URLs ï¿½ partir des rï¿½sultats du moteur de recherche
-
-        ArrayList<Searcher> searchers = new ArrayList<>();
-
-        for (int i = 1; i <= nbThreads; i++)
-          {
-            Searcher searcher = new Searcher(pool);
-            searcher.start();
-            searchers.add(searcher);
-
-          }
-
-        for (Searcher searcher : searchers)
-          {
-            try
-              {
-                searcher.join();
-              } catch (InterruptedException ex)
-              {
-                Logger.getLogger(Crawler.class.getName()).log(Level.SEVERE, null, ex);
-              }
-          }
-        HashMap<String, ArrayList<String>> results;
-        results = search.getMails();
-
-        System.out.println("");
-        System.out.println("");
-        for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
-          {
-
-            ArrayList<String> mails = entry.getValue();
-            System.out.println("Nombre de rï¿½sultats pour le  site  " + entry.getKey() + "  : " + mails.size());
-
-            System.out.println("************Emails trouvï¿½s***************");
-            for (String mail : mails)
-              {
-                System.out.println(mail);
-              }
-            System.out.println("");
-            System.out.println("");
-          }
-
+//        for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
+//          {
+//
+//            ArrayList<String> mails = entry.getValue();
+//            System.out.println("Nombre de rï¿½sultats pour le  site  " + entry.getKey() + "  : " + mails.size());
+//
+//            System.out.println("************Emails trouvï¿½s***************");
+//            for (String mail : mails)
+//              {
+//                System.out.println(mail);
+//              }
+//            System.out.println("");
+//            System.out.println("");
+//          }
+//
+          
+          CrawlerManager crawler = new CrawlerManager("randonnée",1,1);
+          List<String> results = crawler.getResultFromSearchCrawler();
+          
+          for(String aresult:results) System.out.println(aresult);
       }
+          
 
   }
