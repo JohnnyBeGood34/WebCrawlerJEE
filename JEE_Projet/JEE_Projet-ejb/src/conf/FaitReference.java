@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
   {
     @NamedQuery(name = "FaitReference.findAll", query = "SELECT f FROM FaitReference f"),
     @NamedQuery(name = "FaitReference.findByIdRowResult", query = "SELECT f FROM FaitReference f WHERE f.idRowResult = :idRowResult"),
-    @NamedQuery(name = "FaitReference.findByDistributed", query = "SELECT f FROM FaitReference f WHERE f.distributed = :distributed")
+    @NamedQuery(name = "FaitReference.findByDistributed", query = "SELECT f FROM FaitReference f WHERE f.distributed = :distributed"),
+    @NamedQuery(name = "FaitReference.findByIdMail", query = "SELECT f FROM FaitReference f WHERE f.idMail = :idMail")
   })
 public class FaitReference implements Serializable
   {

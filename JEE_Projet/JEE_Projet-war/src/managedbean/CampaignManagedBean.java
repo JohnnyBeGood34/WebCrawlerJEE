@@ -5,17 +5,24 @@
  */
 package managedbean;
 
+import conf.FileMail;
 import conf.Mail;
 import conf.MailingCampaign;
 import conf.Searchresults;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import session.CompaignManager;
+import session.MailManager;
 
 /**
  *
@@ -35,9 +42,63 @@ public class CampaignManagedBean
     SearchResultsManagedBean searchResultManagedBean;
     @Inject
     SearchManagedSessionBean searchManagedSessionBean;
+    @Inject
+    MailManager mailmanager;
+    @EJB
+    MailManager mailManager;
+    @Inject
+    MailManagedSessionBean mailManagedSessionBean;
     private MailingCampaign mailingCampaign;
-    
     private Mail mailForCampaign;
+    private FileMail mailFile;
+
+    public void downloadFile()
+      {
+        File file = new File(getMailFile().getPath());
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+        //response.setHeader("Content-Disposition", "attachment;filename=file.txt");
+        response.setContentLength((int) file.length());
+        ServletOutputStream out = null;
+        try
+          {
+            FileInputStream input = new FileInputStream(file);
+            byte[] buffer = new byte[1024];
+            out = response.getOutputStream();
+            int i = 0;
+            while ((i = input.read(buffer)) != -1)
+              {
+                out.write(buffer);
+                out.flush();
+              }
+            FacesContext.getCurrentInstance().getResponseComplete();
+          } catch (IOException err)
+          {
+            err.printStackTrace();
+          } finally
+          {
+            try
+              {
+                if (out != null)
+                  {
+                    out.close();
+                  }
+              } catch (IOException err)
+              {
+                err.printStackTrace();
+              }
+          }
+      }
+
+    public FileMail getMailFile()
+      {
+        return mailmanager.getFileForMail(getMailForCampaign());
+      }
+
+    public void setMailFile(FileMail mailFile)
+      {
+        this.mailFile = mailFile;
+      }
 
     public Mail getMailForCampaign()
       {
@@ -48,25 +109,21 @@ public class CampaignManagedBean
       {
         this.mailForCampaign = mailForCampaign;
       }
-    
+
     @EJB
     CompaignManager campaignManager;
 
-   
-    
     public String creerCampagne()
       {
         mailingCampaign.setIdUser(loginbean.getCurrentUser().getIdUser());
         mailingCampaign.setDateEnvoi(new Date());
         mailingCampaign.setIdSearch(searchManagedSessionBean.getSearch().getIdSearch());
         campaignManager.createCampaign(mailingCampaign);
-        
+
         campaignBean.setMailingcampaign(mailingCampaign);
         return "mailingPersonnalization?faces-redirect=true";
       }
 
-  
-    
     /**
      * Get all campaigns fo main user
      *
@@ -110,6 +167,13 @@ public class CampaignManagedBean
     public String getCampaignDetails(Integer campaignId)
       {
         campaignBean.setMailingcampaign(campaignManager.getCampaignById(campaignId));
+        Mail mail = campaignManager.getMailForCampaign(campaignBean.getMailingCampaign());
+        if (mail != null)
+          {
+            mailManagedSessionBean.setMail(mail);
+          }else{
+            mailManagedSessionBean.setMail(null);
+        }
         return "campaignDetails?faces-redirect=true";
       }
 

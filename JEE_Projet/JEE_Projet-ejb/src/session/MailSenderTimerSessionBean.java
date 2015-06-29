@@ -59,7 +59,7 @@ public class MailSenderTimerSessionBean {
         email.send();
     }
 
-    //Tous les jours a  00h on reinitialise le compteur a  0
+    //Tous les jours aï¿½ 00h on reinitialise le compteur aï¿½ 0
     @Schedule(dayOfWeek = "*", month = "*", hour = "00", dayOfMonth = "*", year = "*", minute = "00", second = "00")
     public void resetCount() {
         System.out.println("RESET");
