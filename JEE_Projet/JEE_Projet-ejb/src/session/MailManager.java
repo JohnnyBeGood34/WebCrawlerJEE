@@ -38,7 +38,7 @@ public class MailManager
         em.persist(object);
       }
 
-   
+
     
     public List<Mail> getAllMails()
       {
@@ -60,9 +60,9 @@ public class MailManager
      Permet d'obtenir tous les mails non distribués
      @return List<Mail> La liste de tous les mails non distribués
      */
-    public List<Mail> getMailsNonDistributed()
+    public List<FaitReference> getMailsNonDistributed()
       {
-        Query request = em.createNamedQuery("Mail.findByDistributed");
+        Query request = em.createNamedQuery("FaitReference.findByDistributed");
         request.setParameter("distributed", false);
         return request.getResultList();
       }
