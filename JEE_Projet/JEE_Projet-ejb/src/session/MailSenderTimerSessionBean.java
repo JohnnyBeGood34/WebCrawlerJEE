@@ -15,7 +15,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -49,49 +48,53 @@ public class MailSenderTimerSessionBean
     //toute les 30 sec
     @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "*/30")
 
-    public void myTimer() throws MessagingException, EmailException, ClassNotFoundException, SQLException {
+    public void myTimer() throws MessagingException, EmailException, ClassNotFoundException, SQLException
+      {
         System.out.println("Vous etes dans le timer, il est: " + new Date());
 
         if (count < DAILY_LIMIT)
           {
-
-            List<FaitReference> listReferences = new ArrayList<>();
+            List<FaitReference> listReferences;
             listReferences = mailManager.getMailsNonDistributed();
-            if (listReferences.size() > 0) {
+            if (listReferences.size() > 0)
+              {
                 FaitReference faitReference = listReferences.get(0);
-                
-                //Pour envoyer des mails et mettre à jour 
+
+                //Pour envoyer des mails et mettre ï¿½ jour 
                 //sendMessage(faitReference);
                 //updateMailSend(faitReference);
                 count++;
-            }
+              }
 
-            System.out.println("Nombre de mail envoyé: " + count);
-        } else {
-            System.out.println("La limite de " + DAILY_LIMIT + " de mail a été ateinte");
-        }
-    }
+            System.out.println("Nombre de mail envoyï¿½: " + count);
+          } else
+          {
+            System.out.println("La limite de " + DAILY_LIMIT + " de mail a ï¿½tï¿½ ateinte");
+          }
+      }
 
     public void sendMessage(FaitReference faitReference) throws EmailException
       {
 
         //String recipient = faitReference.getIdSearchResult().getEmailResult();
         String recipient = "kevjosteph@gmail.com";
-        
+
         String mailSendFrom = null;
         Searchresults searchResult = faitReference.getIdSearchResult();
         Search search = searchResult.getIdSearch();
-        
-        List<Effectuer> listEffectuer = new ArrayList<>();
-        listEffectuer = effectuerManager.getAllEffectuer();    
-        
-        for(Effectuer effectuer:listEffectuer){
-            if(effectuer.getIdSearch().getIdSearch() == search.getIdSearch()){ 
+
+        List<Effectuer> listEffectuer;
+        listEffectuer = effectuerManager.getAllEffectuer();
+
+        for (Effectuer effectuer : listEffectuer)
+          {
+            if (effectuer.getIdSearch().getIdSearch() == search.getIdSearch())
+              {
                 User user = userManager.getUserById(effectuer.getIdUser().getIdUser());
                 mailSendFrom = user.getEmail();
-            }
-        }
-        
+              }
+          }
+
         String subject = faitReference.getIdMail().getObjet();
         String message = faitReference.getIdMail().getMessage();
 
@@ -107,7 +110,7 @@ public class MailSenderTimerSessionBean
 
         if (mailManager.getAllFiles(faitReference) != null)
           {
-            List<FileMail> listFile = new ArrayList<>();
+            List<FileMail> listFile;
             listFile = mailManager.getAllFiles(faitReference);
             for (FileMail fileMail : listFile)
               {
@@ -127,7 +130,8 @@ public class MailSenderTimerSessionBean
         System.out.println("et le corps du message est : " + message);
       }
 
-    private void updateMailSend(FaitReference faitReference) throws ClassNotFoundException, SQLException {
+    private void updateMailSend(FaitReference faitReference) throws ClassNotFoundException, SQLException
+      {
         // JDBC driver name and database URL
         String JDBC_DRIVER = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource";
         String DB_URL = "jdbc:mysql://localhost:3306/tuveuxquoi?useUnicode=true&characterEncoding=UTF-8";
@@ -150,10 +154,10 @@ public class MailSenderTimerSessionBean
         System.out.println("Creating statement...");
         stmt = conn.createStatement();
         String sql = "UPDATE fait_reference "
-                + "SET DISTRIBUTED = 1 WHERE ID_ROW_RESULT =  "+faitReference.getIdRowResult();
+                + "SET DISTRIBUTED = 1 WHERE ID_ROW_RESULT =  " + faitReference.getIdRowResult();
         stmt.executeUpdate(sql);
 
-    }
+      }
 
     //Tous les jours aï¿½ 00h on reinitialise le compteur aï¿½ 0
     @Schedule(dayOfWeek = "*", month = "*", hour = "00", dayOfMonth = "*", year = "*", minute = "00", second = "00")
