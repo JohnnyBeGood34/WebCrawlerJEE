@@ -5,12 +5,10 @@
  */
 package session;
 
-import conf.Effectuer;
 import conf.FaitReference;
 import conf.FileMail;
 import conf.Mail;
 import conf.MailingCampaign;
-import conf.Searchresults;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;

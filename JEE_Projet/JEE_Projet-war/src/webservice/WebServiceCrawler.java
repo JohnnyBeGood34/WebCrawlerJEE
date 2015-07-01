@@ -19,7 +19,8 @@ import javax.jws.WebParam;
  */
 @WebService(serviceName = "WebServiceCrawler")
 public class WebServiceCrawler {
-
+    
+    
     /**
      * Web service operation
      * @param inputSearch
@@ -35,4 +36,6 @@ public class WebServiceCrawler {
         resultListEmailsFromSearch = result.getResultFromSearchCrawler();
         return resultListEmailsFromSearch;
     }
+    
+    
 }
