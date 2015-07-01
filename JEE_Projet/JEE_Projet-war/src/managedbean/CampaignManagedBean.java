@@ -153,7 +153,7 @@ public class CampaignManagedBean
           {
             for (Searchresults sr : searchResultManagedBean.getLocalSearchResults())
               {
-                System.out.println("THE FUCKING IS IN CAMPAIGN : " + sr.getIsInCampaign());
+                System.out.println("THE IS IN CAMPAIGN : " + sr.getIsInCampaign());
               }
           }
         return "mailing";

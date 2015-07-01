@@ -98,8 +98,12 @@ public class SearchManagedBean
 
     public String getResultForSearch(Search idSearch)
       {
+        String stringToReturn = "searchDetails?faces-redirect=true";
         searchResultsManagedBean.setSearchResults(idSearch);
-        return "searchDetails?faces-redirect=true";
+        if(!loginbean.isLoggedIn()){
+            stringToReturn = "index?faces-redirect=true";
+        }
+        return stringToReturn;
       }
 
     public void createSearch()
@@ -107,32 +111,14 @@ public class SearchManagedBean
         if (loginbean.getCurrentUser() != null)
           {
             Search searchFromDb = null;
-            boolean searchExists = searchManager.testSearchExistanceByTherm(this.search.getTherm());
+            boolean searchExists = searchManager.testSearchExistance(this.search.getTherm(), this.search.getDeepLevel());
+            //boolean searchAvailable = searchManager.isSearchAvailable(this.search);
             if (searchExists)
               {
                 searchFromDb = searchManager.getSearchForTherm(this.search.getTherm());
               } else
               {
-                Integer deeplevelinteger = 1;
-                if (deepLevel != null)
-                  {
-                    switch (deepLevel)
-                      {
-                        case "2":
-                            deeplevelinteger = 2;
-                            break;
-                        case "3":
-                            deeplevelinteger = 3;
-                            break;
-                        case "4":
-                            deeplevelinteger = 4;
-                            break;
-                        case "5":
-                            deeplevelinteger = 5;
-                            break;
-                      }
-                  }
-                this.search.setDeepLevel(deeplevelinteger);
+                setDeepLevelForCurrentSearch();
                 if (this.search.getIsFr() == null)
                   {
                     this.search.setIsFr(false);
@@ -156,49 +142,75 @@ public class SearchManagedBean
             if (searchFromDb != null)
               {
                 searchResultsManagedBean.setSearchResults(searchFromDb);
+
               } else
               {
-                try
-                  {
-                    int limit = 10;
-                    CrawlerManager crawlerManager = new CrawlerManager(this.search.getTherm(), this.search.getDeepLevel(), limit);
-                    HashMap<String, ArrayList<String>> results = crawlerManager.getResults();
-
-                    for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
-                      {
-
-                        ArrayList<String> mails = entry.getValue();
-                        System.out.println("Nombre de r�sultats pour le  site  " + entry.getKey() + "  : " + mails.size());
-
-                        System.out.println("************Emails trouv�s***************");
-                        for (String mail : mails)
-                          {
-                            System.out.println(mail);
-                            //Create results
-                            Searchresults searchResult = new Searchresults();
-                            searchResult.setEmailResult(mail);
-                            searchResult.setIdSearch(this.search);
-                            searchResult.setSiteFound(entry.getKey());
-                            //Insert searchresult to db
-                            searchManager.persist(searchResult);
-                          }
-                        System.out.println("");
-                        System.out.println("");
-                      }
-
-                  } catch (IOException ex)
-                  {
-                    Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-                searchResultsManagedBean.setSearchResults(this.search);
+                    searchResultsForSearch();
               }
-          } 
-        else
+          } else
           {
             //here need to lauch the scrapper and show results
             //Get results
             //Populate resultSearch (display)
+            setDeepLevelForCurrentSearch();
+            this.search.setDateSearch(new Date());
+            searchResultsManagedBean.setSearchResults(this.search);
           }
 
+      }
+
+    private void setDeepLevelForCurrentSearch()
+      {
+        Integer deeplevelinteger = 1;
+        if (deepLevel != null)
+          {
+            switch (deepLevel)
+              {
+                case "2":
+                    deeplevelinteger = 2;
+                    break;
+                case "3":
+                    deeplevelinteger = 3;
+                    break;
+                case "4":
+                    deeplevelinteger = 4;
+                    break;
+                case "5":
+                    deeplevelinteger = 5;
+                    break;
+              }
+          }
+        this.search.setDeepLevel(deeplevelinteger);
+      }
+
+    private void searchResultsForSearch()
+      {
+        try
+          {
+            int limit = 10;
+            CrawlerManager crawlerManager = new CrawlerManager(this.search.getTherm(), this.search.getDeepLevel(), limit);
+            HashMap<String, ArrayList<String>> results = crawlerManager.getResults();
+
+            for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
+              {
+
+                ArrayList<String> mails = entry.getValue();
+                for (String mail : mails)
+                  {
+                    //Create results
+                    Searchresults searchResult = new Searchresults();
+                    searchResult.setEmailResult(mail);
+                    searchResult.setIdSearch(this.search);
+                    searchResult.setSiteFound(entry.getKey());
+                    //Insert searchresult to db
+                    searchManager.persist(searchResult);
+                  }
+              }
+
+          } catch (IOException ex)
+          {
+            Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        searchResultsManagedBean.setSearchResults(this.search);
       }
   }
