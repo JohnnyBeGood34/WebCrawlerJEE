@@ -75,6 +75,7 @@ public class UserManagedBean implements Serializable
     // d'inscription
     public void inscrire()
       {
+        utilisateur.setDenied(false);
         userManager.createUser(utilisateur);
         userManager.addUserAddress(utilisateur, adresseUtilisateur);
         FacesMessage message = new FacesMessage("Inscription réussie avec succes !");

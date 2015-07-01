@@ -42,7 +42,7 @@ public class MailSenderTimerSessionBean
     UserManager userManager;
     @Inject
     EffectuerManager effectuerManager;
-    private final int DAILY_LIMIT = 20;
+    private final int DAILY_LIMIT = 200;
     private int count = 0;
 
     //toute les 30 sec
@@ -61,8 +61,8 @@ public class MailSenderTimerSessionBean
                 FaitReference faitReference = listReferences.get(0);
 
                 //Pour envoyer des mails et mettre � jour 
-                //sendMessage(faitReference);
-                //updateMailSend(faitReference);
+                sendMessage(faitReference);
+                updateMailSend(faitReference);
                 count++;
               }
 
