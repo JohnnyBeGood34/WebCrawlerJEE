@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import javax.mail.MessagingException;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
@@ -30,10 +31,11 @@ import org.apache.commons.mail.MultiPartEmail;
  */
 @Singleton
 @LocalBean
-public class MailSenderTimerSessionBean {
+public class MailSenderTimerSessionBean
+  {
 
-    @EJB
-    private MailManager mailManager;
+    @Inject
+    MailManager mailManager;
     private final int DAILY_LIMIT = 20;
     private int count = 0;
 
@@ -43,7 +45,8 @@ public class MailSenderTimerSessionBean {
     public void myTimer() throws MessagingException, EmailException, ClassNotFoundException, SQLException {
         System.out.println("Vous etes dans le timer, il est: " + new Date());
 
-        if (count < DAILY_LIMIT) {
+        if (count < DAILY_LIMIT)
+          {
 
             List<FaitReference> listReferences = new ArrayList<>();
             listReferences = mailManager.getMailsNonDistributed();
@@ -62,7 +65,8 @@ public class MailSenderTimerSessionBean {
         }
     }
 
-    public void sendMessage(FaitReference faitReference) throws EmailException {
+    public void sendMessage(FaitReference faitReference) throws EmailException
+      {
 
         String recipient = faitReference.getIdSearchResult().getEmailResult();
         String subject = faitReference.getIdMail().getObjet();
@@ -78,10 +82,12 @@ public class MailSenderTimerSessionBean {
         email.setMsg(message);
         email.addTo("kevjosteph@gmail.com");
 
-        if (mailManager.getAllFiles(faitReference) != null) {
+        if (mailManager.getAllFiles(faitReference) != null)
+          {
             List<FileMail> listFile = new ArrayList<>();
             listFile = mailManager.getAllFiles(faitReference);
-            for (FileMail fileMail : listFile) {
+            for (FileMail fileMail : listFile)
+              {
                 EmailAttachment attachment = new EmailAttachment();
 
                 attachment.setPath(fileMail.getPath());
@@ -89,14 +95,14 @@ public class MailSenderTimerSessionBean {
                 attachment.setDescription("Picture of John");
                 attachment.setName("John");
                 email.attach(attachment);
-            }
-        }
+              }
+          }
         email.send();
 
-        System.out.println("Le mail a été envoyé à : " + recipient);
+        System.out.println("Le mail a ï¿½tï¿½ envoyï¿½ ï¿½ : " + recipient);
         System.out.println("avec le sujet : " + subject);
         System.out.println("et le corps du message est : " + message);
-    }
+      }
 
     private void updateMailSend(FaitReference faitReference) throws ClassNotFoundException, SQLException {
         // JDBC driver name and database URL
@@ -127,9 +133,10 @@ public class MailSenderTimerSessionBean {
     }
 
     //Tous les jours aï¿½ 00h on reinitialise le compteur aï¿½ 0
-    @Schedule(dayOfWeek = "*", month = "*", hour = "00", dayOfMonth = "*", year = "*", minute = "00", second = "00")
-    public void resetCount() {
+    //@Schedule(dayOfWeek = "*", month = "*", hour = "00", dayOfMonth = "*", year = "*", minute = "00", second = "00")
+    public void resetCount()
+      {
         System.out.println("RESET");
         count = 0;
-    }
-}
+      }
+  }

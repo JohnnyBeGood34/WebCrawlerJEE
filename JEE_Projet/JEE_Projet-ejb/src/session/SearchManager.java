@@ -90,7 +90,6 @@ public class SearchManager {
         Query request = em.createNamedQuery("Searchresults.findByIdSearch");
           
         request.setParameter("idSearch", search);
-        System.out.println("FUCKIN RESUEST : "+request.getResultList().toString());
         return request.getResultList();
       }
 
