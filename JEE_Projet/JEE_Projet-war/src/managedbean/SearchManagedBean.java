@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import session.SearchManager;
@@ -39,6 +41,8 @@ public class SearchManagedBean
     LoginManagedBean loginbean;
     @Inject
     UserSearchManagedSessionBean userSearchSessionBean;
+    @Inject
+    SearchManagedSessionBean searchSessionbean;
     @Inject
     SearchResultsManagedBean searchResultsManagedBean;
     @EJB
@@ -99,17 +103,19 @@ public class SearchManagedBean
     public String getResultForSearch(Search idSearch)
       {
         String stringToReturn = "searchDetails?faces-redirect=true";
-        searchResultsManagedBean.setSearchResults(idSearch);
-        if(!loginbean.isLoggedIn()){
+        searchSessionbean.setSearch(idSearch);
+        if (!loginbean.isLoggedIn())
+          {
             stringToReturn = "index?faces-redirect=true";
-        }
+          }
         return stringToReturn;
       }
 
     public void createSearch()
       {
-        if (loginbean.getCurrentUser() != null)
+        if (loginbean.isLoggedIn())
           {
+            setDeepLevelForCurrentSearch();
             Search searchFromDb = null;
             boolean searchExists = searchManager.testSearchExistance(this.search.getTherm(), this.search.getDeepLevel());
             //boolean searchAvailable = searchManager.isSearchAvailable(this.search);
@@ -118,7 +124,6 @@ public class SearchManagedBean
                 searchFromDb = searchManager.getSearchForTherm(this.search.getTherm());
               } else
               {
-                setDeepLevelForCurrentSearch();
                 if (this.search.getIsFr() == null)
                   {
                     this.search.setIsFr(false);
@@ -141,22 +146,17 @@ public class SearchManagedBean
             //Here need to get results from database according to the date
             if (searchFromDb != null)
               {
-                searchResultsManagedBean.setSearchResults(searchFromDb);
+                searchSessionbean.setSearch(searchFromDb);
 
               } else
               {
-                    searchResultsForSearch();
+                searchResultsForSearch();
               }
           } else
           {
-            //here need to lauch the scrapper and show results
-            //Get results
-            //Populate resultSearch (display)
-            setDeepLevelForCurrentSearch();
-            this.search.setDateSearch(new Date());
-            searchResultsManagedBean.setSearchResults(this.search);
+            FacesMessage message = new FacesMessage("Veuillez vous inscrire pour effectuer une recherche!");
+            FacesContext.getCurrentInstance().addMessage(null, message);
           }
-
       }
 
     private void setDeepLevelForCurrentSearch()
@@ -211,6 +211,6 @@ public class SearchManagedBean
           {
             Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
           }
-        searchResultsManagedBean.setSearchResults(this.search);
+        searchSessionbean.setSearch(this.search);
       }
   }

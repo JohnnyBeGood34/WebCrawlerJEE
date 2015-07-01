@@ -30,6 +30,7 @@ import session.SearchManager;
 public class SearchResultsManagedBean
   {
 
+    private boolean searchAlreadyLauched = false;
     private List<Searchresults> searchResults;
     @EJB
     private SearchManager searchManager;
@@ -37,6 +38,7 @@ public class SearchResultsManagedBean
     SearchManagedSessionBean searchSessionbean;
     @Inject
     LoginManagedBean loginbean;
+
     /**
      * Creates a new instance of SearchResultsManagedBean
      */
@@ -59,44 +61,13 @@ public class SearchResultsManagedBean
 
     public List<Searchresults> getSearchResults()
       {
-        List<Searchresults> listToReturnIfResultsAreEmpty = new ArrayList();
         this.searchResults = searchManager.getResultsFromDataBase(searchSessionbean.getSearch());
-        //If there aren't any results in database
-        if (this.searchResults.isEmpty() && searchSessionbean.getSearch()!= null && !loginbean.isLoggedIn())
-          {
-            try
-              {
-                int limit = 10;
-                CrawlerManager crawlerManager = new CrawlerManager(searchSessionbean.getSearch().getTherm(), searchSessionbean.getSearch().getDeepLevel(), limit);
-                HashMap<String, ArrayList<String>> results = crawlerManager.getResults();
-
-                for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
-                  {
-
-                    ArrayList<String> mails = entry.getValue();
-                    for (String mail : mails)
-                      {
-                        //Create results
-                        Searchresults searchResult = new Searchresults();
-                        searchResult.setEmailResult(mail);
-                        searchResult.setIdSearch(searchSessionbean.getSearch());
-                        searchResult.setSiteFound(entry.getKey());
-                        listToReturnIfResultsAreEmpty.add(searchResult);
-                      }
-                  }
-
-              } catch (IOException ex)
-              {
-                Logger.getLogger(SearchManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-              }
-            this.searchResults = listToReturnIfResultsAreEmpty;
-          }
         return this.searchResults;
       }
 
-    public void setSearchResults(Search aSearch)
+    public void setSearchResults(List<Searchresults> aSearch)
       {
-        searchSessionbean.setSearch(aSearch);
+        this.searchResults = aSearch;
       }
 
     public List<Searchresults> getLocalSearchResults()

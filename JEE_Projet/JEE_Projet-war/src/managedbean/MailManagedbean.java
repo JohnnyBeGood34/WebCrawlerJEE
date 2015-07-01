@@ -130,7 +130,7 @@ public class MailManagedbean
                 this.copyFile(getFilename(fileToUpload), fileToUpload.getInputStream(),timestamp);
                 this.file.setIdMail(mail);
                 this.file.setIsInBody(false);
-                this.file.setPath(path + "\\" + timestamp+getFilename(fileToUpload));
+                this.file.setPath(path + "\\" + getFilename(fileToUpload));
 
                 mailManager.createFile(file);
               } catch (IOException ex)
@@ -177,7 +177,7 @@ public class MailManagedbean
       {
         try
           {
-            try (OutputStream output = new FileOutputStream(new java.io.File(this.path + "\\" + timestamp+fileName)))
+            try (OutputStream output = new FileOutputStream(new java.io.File(this.path + "\\" + fileName)))
               {
                 int read = 0;
                 byte[] bytes = new byte[1024];

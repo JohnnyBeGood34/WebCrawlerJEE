@@ -50,7 +50,7 @@ public class SearchManager
         Query request = em.createNamedQuery("Search.findByThermAndDeepLevel");
         request.setParameter("therm", therm);
         request.setParameter("deepLevel", deeplevel);
-        return request.getResultList().size() == 1;
+        return request.getResultList().size() >0;
       }
 
     public boolean isSearchAvailable(Search aSearch)
