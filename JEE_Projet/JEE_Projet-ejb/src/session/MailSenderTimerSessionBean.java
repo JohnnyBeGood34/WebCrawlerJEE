@@ -5,8 +5,12 @@
  */
 package session;
 
+import conf.Effectuer;
 import conf.FaitReference;
 import conf.FileMail;
+import conf.Search;
+import conf.Searchresults;
+import conf.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,7 +18,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -36,6 +39,10 @@ public class MailSenderTimerSessionBean
 
     @Inject
     MailManager mailManager;
+    @Inject
+    UserManager userManager;
+    @Inject
+    EffectuerManager effectuerManager;
     private final int DAILY_LIMIT = 20;
     private int count = 0;
 
@@ -68,7 +75,23 @@ public class MailSenderTimerSessionBean
     public void sendMessage(FaitReference faitReference) throws EmailException
       {
 
-        String recipient = faitReference.getIdSearchResult().getEmailResult();
+        //String recipient = faitReference.getIdSearchResult().getEmailResult();
+        String recipient = "kevjosteph@gmail.com";
+        
+        String mailSendFrom = null;
+        Searchresults searchResult = faitReference.getIdSearchResult();
+        Search search = searchResult.getIdSearch();
+        
+        List<Effectuer> listEffectuer = new ArrayList<>();
+        listEffectuer = effectuerManager.getAllEffectuer();    
+        
+        for(Effectuer effectuer:listEffectuer){
+            if(effectuer.getIdSearch().getIdSearch() == search.getIdSearch()){ 
+                User user = userManager.getUserById(effectuer.getIdUser().getIdUser());
+                mailSendFrom = user.getEmail();
+            }
+        }
+        
         String subject = faitReference.getIdMail().getObjet();
         String message = faitReference.getIdMail().getMessage();
 
@@ -77,10 +100,10 @@ public class MailSenderTimerSessionBean
         email.setSmtpPort(465);
         email.setAuthenticator(new DefaultAuthenticator("kevjosteph@gmail.com", "abcd4ABCD"));
         email.setSSLOnConnect(true);
-        email.setFrom("kevjosteph@gmail.com");
+        email.setFrom(mailSendFrom);
         email.setSubject(subject);
         email.setMsg(message);
-        email.addTo("kevjosteph@gmail.com");
+        email.addTo(recipient);
 
         if (mailManager.getAllFiles(faitReference) != null)
           {
@@ -133,7 +156,7 @@ public class MailSenderTimerSessionBean
     }
 
     //Tous les jours a� 00h on reinitialise le compteur a� 0
-    //@Schedule(dayOfWeek = "*", month = "*", hour = "00", dayOfMonth = "*", year = "*", minute = "00", second = "00")
+    @Schedule(dayOfWeek = "*", month = "*", hour = "00", dayOfMonth = "*", year = "*", minute = "00", second = "00")
     public void resetCount()
       {
         System.out.println("RESET");

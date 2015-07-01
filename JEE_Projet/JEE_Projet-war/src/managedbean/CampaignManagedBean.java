@@ -116,13 +116,19 @@ public class CampaignManagedBean
 
     public String creerCampagne()
       {
+        String stringToResult = "mailingPersonnalization?faces-redirect=true";
+        
         mailingCampaign.setIdUser(loginbean.getCurrentUser().getIdUser());
         mailingCampaign.setDateEnvoi(new Date());
         mailingCampaign.setIdSearch(searchManagedSessionBean.getSearch().getIdSearch());
         campaignManager.createCampaign(mailingCampaign);
 
         campaignBean.setMailingcampaign(mailingCampaign);
-        return "mailingPersonnalization?faces-redirect=true";
+        
+        if(!loginbean.isLoggedIn()){
+            stringToResult = "index?faces-redirect=true";
+        }
+        return stringToResult;
       }
 
     /**
