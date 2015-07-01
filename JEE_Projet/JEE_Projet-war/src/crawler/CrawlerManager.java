@@ -15,29 +15,53 @@ import java.util.logging.Logger;
 import search.engine.api.GoogleSearch;
 
 /**
- *
+ * Class encapsulating and managing the threads for the crawler
  * @author Kevin
  */
 public class CrawlerManager {
-
+    
+    /**
+     * The keyword or several keywords the user is looking for
+     */
     private final String _inputSearch;
+    /**
+     * Depth level of the search
+     */
     private final int _deepLevel;
-    private final int NB_THREADS = 8;
+    /**
+     * The number of threads to launch
+     */
+    private  final int NB_THREADS = 8;
+    /**
+     * The maximum number of emails we want to find 
+     */
     private final int LIMIT;
     
+    /**
+     * 
+     * @param inputSearch
+     * @param deepLevel
+     * @param limit 
+     */
     public CrawlerManager(String inputSearch, int deepLevel,int limit) {
         this._inputSearch = inputSearch;
         this._deepLevel = deepLevel;
         LIMIT = limit;
     }
 
+        
+    /**
+     * 
+     * @return
+     * @throws IOException 
+     */
     public List<String> getResultFromSearchCrawler() throws IOException {
         List<String> resultListEmailsFromSearch = new ArrayList<>();
                 
         SearchCrawler search = new SearchCrawler(_inputSearch, _deepLevel);
         search.setLimit(LIMIT);
-        GoogleSearch googleEngine = new GoogleSearch(_inputSearch);//Le moteur de recherche � utiliser
-        Pool pool = new Pool(googleEngine);//Construction du pool d'URLs � partir des r�sultats du moteur de recherche
+        GoogleSearch googleEngine = new GoogleSearch(_inputSearch);
+        Pool pool = new Pool(googleEngine);
 
         ArrayList<Searcher> searchers = new ArrayList<>();
 
@@ -57,6 +81,7 @@ public class CrawlerManager {
             }
           
         }
+        
         HashMap<String, ArrayList<String>> results;
         results = search.getMails();
 

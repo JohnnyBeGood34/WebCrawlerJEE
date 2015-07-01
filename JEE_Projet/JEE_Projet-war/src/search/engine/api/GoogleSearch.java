@@ -81,7 +81,8 @@ public class GoogleSearch implements SearchEngine{
         
          for(int i = 0 ;i<results.length();i++){
             JSONObject resultEngine = (JSONObject)results.get(i);
-            ResultSearch resultSearch = new ResultSearch(resultEngine.getString("url"),1);
+            URL url = new URL(resultEngine.getString("url"));
+            ResultSearch resultSearch = new ResultSearch("http://"+url.getHost(),1);
             urls.add(resultSearch);
         }
         return urls;
@@ -91,5 +92,8 @@ public class GoogleSearch implements SearchEngine{
     public String getNameEngine() {
         return ENGINE_NAME;
     }
+    
+    
+    
  
 }

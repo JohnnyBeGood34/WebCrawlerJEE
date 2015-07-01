@@ -58,6 +58,7 @@ public class Searcher extends Thread{
         URL url = new URL(result.getUrl());
          String domainName = url.getHost();
        
+        
          Document doc = Jsoup.connect(result.getUrl())
                  .userAgent("Mozilla").timeout(3000)
                  .get();
@@ -73,21 +74,21 @@ public class Searcher extends Thread{
      * @throws MalformedURLException 
      */
     private void findLinksIntoPage(Document dom ,String domainName,int currentLevelSearch) throws MalformedURLException{
-          Elements links = dom.select("a");
-        System.out.println("NB LINKS : "+links.size());
+          
+        Elements links = dom.select("a");
         
         for(Element link:links){
                
            String urlFound = link.attr("href");                                                                         
             if(currentLevelSearch <= search.getLevel()) { 
-                
+              
                   if (isUrlValid(urlFound,domainName)) {
                       String url = urlFound.contains("http") ? urlFound : "http://"+domainName+urlFound ;
+                      url= url.replace("%20","").trim();
                       int newLevel = currentLevelSearch++;
                       ResultSearch newResult = new ResultSearch(url,newLevel);
-                      addUrl(newResult);
-                  }
-               
+                      addUrl(newResult);                     
+                  }               
             }
         }
     }
@@ -113,7 +114,7 @@ public class Searcher extends Thread{
     /**
      * Method which finds emails into a HTML document 
      * and add it to the list of the current search
-     * @param dom 
+     * @param dom The document of HTML page
      */
     private void findEmailsIntoPage(Document dom,String site){
        
@@ -132,18 +133,18 @@ public class Searcher extends Thread{
     @Override
      public void run(){
          
-        ResultSearch result = poolUrls.tryGetUrl();
-        int emails_size = search.size();
-        
-        while(result != null && emails_size < search.getLimit()){
-            System.out.println("EMAILS FOUND : "+emails_size+"  SEARCH LIMIT : "+search.getLimit());
-            try {
-               searchInPage(result);
-            } catch (IOException ex) {                
-                    System.out.println("Probleme de connexion ou  url malformï¿½e : "+result.getUrl());
-            }
-            result=poolUrls.tryGetUrl();
-            emails_size = search.size();
+        ResultSearch result = null;
+   
+        result = poolUrls.tryGetUrl();
+                      
+        while(result != null && search.hasReachedLimit==false){                                       
+                try {                
+                    searchInPage(result);
+                } catch (IOException ex) {
+                    System.out.println("Probleme de connexion ou  url malformée : "+result.getUrl());
+                }
+                result=poolUrls.tryGetUrl();
+                                       
         }
     }
     
@@ -152,7 +153,7 @@ public class Searcher extends Thread{
      * Method which adds a result to the pool
      * @param result A new result found to add to pool
      */ 
-    private  synchronized void addUrl(ResultSearch result){
+    private   void addUrl(ResultSearch result){
         poolUrls.addUrl(result);
     }
     

@@ -10,7 +10,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 /**
- *
+ * Class to test the crawler
  * @author Stef
  */
 public class Crawler
@@ -21,28 +21,12 @@ public class Crawler
      */
     public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException
       {
-
-
-//        for (Map.Entry<String, ArrayList<String>> entry : results.entrySet())
-//          {
-//
-//            ArrayList<String> mails = entry.getValue();
-//            System.out.println("Nombre de rï¿½sultats pour le  site  " + entry.getKey() + "  : " + mails.size());
-//
-//            System.out.println("************Emails trouvï¿½s***************");
-//            for (String mail : mails)
-//              {
-//                System.out.println(mail);
-//              }
-//            System.out.println("");
-//            System.out.println("");
-//          }
-//
           
-          CrawlerManager crawler = new CrawlerManager("randonnée",1,1);
+          CrawlerManager crawler = new CrawlerManager("montpellier fête musique",1,100);
           List<String> results = crawler.getResultFromSearchCrawler();
           
           for(String aresult:results) System.out.println(aresult);
+
       }
           
 

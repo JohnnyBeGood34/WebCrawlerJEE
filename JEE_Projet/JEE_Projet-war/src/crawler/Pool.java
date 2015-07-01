@@ -30,11 +30,12 @@ public class Pool {
      */
     private SearchEngine searchEngine;
     
-    
+    final Lock lock = new ReentrantLock();
+    final Condition urlAdded = lock.newCondition();
    
     
     /**
-     * Constructor 
+     * Constructs a new Pool 
      * 
      * @param engine An object implementing the SearchEngine interface
      * @throws IOException 
@@ -46,21 +47,27 @@ public class Pool {
         for(ResultSearch result : results) System.out.println("URL from "+ engine.getNameEngine()+ ": "+result.getUrl());
          System.out.println("********************");
         urlsAlreadyTreated = new ArrayList();
+        for(ResultSearch result:results) urlsAlreadyTreated.add(result.getUrl());
         
     }
     
     /**
      * Method which adds an URL to the list 
-     * @param result
-     * 
+     * @param result a ResultSearch
+     * thread-safe methog
      */
     public void addUrl(ResultSearch result){
-        
-        if(!urlsAlreadyTreated.contains(result.getUrl())){
-            System.out.println("Adding link to pool : "+result.getUrl());
+        lock.lock();
+        String url = result.getUrl().trim();
+        if(!urlsAlreadyTreated.contains(url)){
+            System.out.println("Adding link to pool : "+url);
             results.add(result);
+            urlAdded.signal();
         }
-       
+        else{
+            System.out.println("Url déjà recherchée : "+url);
+        }
+       lock.unlock();
         
     }
     
@@ -83,14 +90,15 @@ public class Pool {
      * is not empty
      * @return String An URL from the list
      */
-    public synchronized ResultSearch tryGetUrl(){
-        
+    public synchronized ResultSearch tryGetUrl() {
+                
         ResultSearch result = null;
-        if(!results.isEmpty()){
-           result = results.get(0);
-            results.remove(0);
-            urlsAlreadyTreated.add(result.getUrl());
-        }
+                    
+            if(!results.isEmpty()){
+                result = results.get(0);
+                results.remove(0);
+                urlsAlreadyTreated.add(result.getUrl());
+            }
                  
         return result;
     }

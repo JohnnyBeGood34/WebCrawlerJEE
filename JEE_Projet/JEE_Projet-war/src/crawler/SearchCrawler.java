@@ -33,6 +33,8 @@ public class SearchCrawler {
      */
     private static HashMap<String,ArrayList<String>> mails;
     
+    public boolean hasReachedLimit =false;
+    
     /**
      * 
      * @param keyword The keyword of the search
@@ -58,6 +60,7 @@ public class SearchCrawler {
              
             size+= mailsBySite.size();
           }
+        
         return size;
     }
     
@@ -101,6 +104,8 @@ public class SearchCrawler {
         this.limit= limit;
     }
     
+    
+    
     /**
      * 
      * @return the limit 
@@ -117,13 +122,14 @@ public class SearchCrawler {
     public  synchronized void addEmail(String email,String site){
         
        ArrayList<String> results = mails.get(site);
-       
+       email= email.toLowerCase().trim();
        if( results == null) results = new ArrayList<>();
        
        if(results.contains(email) == false && email.contains("noreply") == false){         
             mails.remove(site);
            results.add(email);
            mails.put(site, results);
+           if(size()==limit) hasReachedLimit =true;
        }
     }
 }
