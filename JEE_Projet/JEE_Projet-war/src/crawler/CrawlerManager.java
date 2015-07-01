@@ -31,9 +31,8 @@ public class CrawlerManager {
         LIMIT = limit;
     }
 
-    public List<String> getResultFromSearchCrawler() throws IOException {
-        List<String> resultListEmailsFromSearch = new ArrayList<>();
-                
+    
+    public HashMap<String, ArrayList<String>> getResults() throws IOException{
         SearchCrawler search = new SearchCrawler(_inputSearch, _deepLevel);
         search.setLimit(LIMIT);
         GoogleSearch googleEngine = new GoogleSearch(_inputSearch);//Le moteur de recherche � utiliser
@@ -59,7 +58,12 @@ public class CrawlerManager {
         }
         HashMap<String, ArrayList<String>> results;
         results = search.getMails();
-
+        return results;
+    }
+    
+    public List<String> getResultFromSearchCrawler() throws IOException {
+        List<String> resultListEmailsFromSearch = new ArrayList<>();
+        HashMap<String, ArrayList<String>> results = getResults();
         for (Map.Entry<String, ArrayList<String>> entry : results.entrySet()) {
 
             ArrayList<String> mails = entry.getValue();

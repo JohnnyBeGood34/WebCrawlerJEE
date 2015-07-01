@@ -34,7 +34,9 @@
                             <f:facet name="header">
                                 <h:outputText value="Date d'envoi"/>
                             </f:facet>
-                            <h:outputText value="#{item.dateEnvoi}"/>
+                            <h:outputText value="#{item.dateEnvoi}">
+                                <f:convertDateTime pattern="d/M/yyyy" />
+                            </h:outputText>
                         </h:column>
                     </h:dataTable>
                 </h:form>

@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
   {
     @NamedQuery(name = "MailingCampaign.findAll", query = "SELECT m FROM MailingCampaign m"),
     @NamedQuery(name = "MailingCampaign.findByIdMailing", query = "SELECT m FROM MailingCampaign m WHERE m.idMailing = :idMailing"),
-    @NamedQuery(name = "MailingCampaign.findByIdUser", query = "SELECT m FROM MailingCampaign m WHERE m.idUser = :idUser"),
+    @NamedQuery(name = "MailingCampaign.findByIdUser", query = "SELECT m FROM MailingCampaign m WHERE m.idUser = :idUser ORDER BY m.dateEnvoi DESC"),
     @NamedQuery(name = "MailingCampaign.findByTitle", query = "SELECT m FROM MailingCampaign m WHERE m.title = :title"),
     @NamedQuery(name = "MailingCampaign.findByLangue", query = "SELECT m FROM MailingCampaign m WHERE m.langue = :langue"),
     @NamedQuery(name = "MailingCampaign.findByDateEnvoi", query = "SELECT m FROM MailingCampaign m WHERE m.dateEnvoi = :dateEnvoi"),
