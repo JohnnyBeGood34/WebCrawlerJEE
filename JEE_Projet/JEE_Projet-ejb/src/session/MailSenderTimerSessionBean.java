@@ -7,6 +7,10 @@ package session;
 
 import conf.FaitReference;
 import conf.FileMail;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,8 +19,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
@@ -38,23 +40,23 @@ public class MailSenderTimerSessionBean {
     //toute les 30 sec
     @Schedule(dayOfWeek = "*", month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "*", second = "*/30")
 
-    public void myTimer() throws MessagingException, EmailException {
+    public void myTimer() throws MessagingException, EmailException, ClassNotFoundException, SQLException {
         System.out.println("Vous etes dans le timer, il est: " + new Date());
 
         if (count < DAILY_LIMIT) {
 
             List<FaitReference> listReferences = new ArrayList<>();
             listReferences = mailManager.getMailsNonDistributed();
-
-            for (FaitReference faitReference : listReferences) {
-
-                //Pour faire marcher les mail décommenter les 3 lignes suivantes, Par defaut, notre mail est utilisé pr recevoir les mails
+            if (listReferences.size() > 0) {
+                FaitReference faitReference = listReferences.get(0);
+                
+                //Pour envoyer des mails et mettre à jour 
                 //sendMessage(faitReference);
-                mailManager.saveMailDelivered(faitReference);
+                //updateMailSend(faitReference);
                 count++;
-
-                System.out.println("Nombre de mail envoyé: " + count);
             }
+
+            System.out.println("Nombre de mail envoyé: " + count);
         } else {
             System.out.println("La limite de " + DAILY_LIMIT + " de mail a été ateinte");
         }
@@ -94,6 +96,34 @@ public class MailSenderTimerSessionBean {
         System.out.println("Le mail a été envoyé à : " + recipient);
         System.out.println("avec le sujet : " + subject);
         System.out.println("et le corps du message est : " + message);
+    }
+
+    private void updateMailSend(FaitReference faitReference) throws ClassNotFoundException, SQLException {
+        // JDBC driver name and database URL
+        String JDBC_DRIVER = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource";
+        String DB_URL = "jdbc:mysql://localhost:3306/tuveuxquoi?useUnicode=true&characterEncoding=UTF-8";
+
+        //  Database credentials
+        String USER = "root";
+        String PASS = "abcd4ABCD";
+
+        Connection conn = null;
+        Statement stmt = null;
+        //STEP 2: Register JDBC driver
+        Class.forName("com.mysql.jdbc.Driver");
+
+        //STEP 3: Open a connection
+        System.out.println("Connecting to a selected database...");
+        conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        System.out.println("Connected database successfully...");
+
+        //STEP 4: Execute a query
+        System.out.println("Creating statement...");
+        stmt = conn.createStatement();
+        String sql = "UPDATE fait_reference "
+                + "SET DISTRIBUTED = 1 WHERE ID_ROW_RESULT =  "+faitReference.getIdRowResult();
+        stmt.executeUpdate(sql);
+
     }
 
     //Tous les jours aï¿½ 00h on reinitialise le compteur aï¿½ 0
