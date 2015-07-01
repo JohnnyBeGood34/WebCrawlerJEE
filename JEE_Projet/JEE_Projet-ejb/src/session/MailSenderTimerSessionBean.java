@@ -6,7 +6,7 @@
 package session;
 
 import conf.FaitReference;
-import conf.Mail;
+import conf.FileMail;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,9 +18,9 @@ import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
+import org.apache.commons.mail.MultiPartEmail;
 
 /**
  *
@@ -32,8 +32,6 @@ public class MailSenderTimerSessionBean {
 
     @EJB
     private MailManager mailManager;
-    @PersistenceContext(unitName = "JEE_Projet-ejbPU")
-    private EntityManager em;
     private final int DAILY_LIMIT = 20;
     private int count = 0;
 
@@ -50,35 +48,25 @@ public class MailSenderTimerSessionBean {
 
             for (FaitReference faitReference : listReferences) {
 
-                String recipient = faitReference.getIdMail().getMessage();
-                String subject = faitReference.getIdMail().getObjet();
-                String message = faitReference.getIdMail().getMessage();
-                
-                
                 //Pour faire marcher les mail décommenter les 3 lignes suivantes, Par defaut, notre mail est utilisé pr recevoir les mails
-                
-                
-                /*sendMessage("kevjosteph@gmail.com", subject, message);
-                faitReference.setDistributed(true);
-                updateFaitReference(faitReference);*/
-
+                //sendMessage(faitReference);
+                mailManager.saveMailDelivered(faitReference);
                 count++;
+
+                System.out.println("Nombre de mail envoyé: " + count);
             }
-
-            System.out.println(count);
-        }
-        if (count > DAILY_LIMIT) {
-            System.out.println("limite d'envoi atteinte ");
+        } else {
+            System.out.println("La limite de " + DAILY_LIMIT + " de mail a été ateinte");
         }
     }
 
-    public void updateFaitReference(FaitReference faitReference) {
-        em.merge(faitReference);
-    }
+    public void sendMessage(FaitReference faitReference) throws EmailException {
 
-    public void sendMessage(String recipient, String subject, String message) throws EmailException {
+        String recipient = faitReference.getIdSearchResult().getEmailResult();
+        String subject = faitReference.getIdMail().getObjet();
+        String message = faitReference.getIdMail().getMessage();
 
-        Email email = new SimpleEmail();
+        MultiPartEmail email = new MultiPartEmail();
         email.setHostName("smtp.googlemail.com");
         email.setSmtpPort(465);
         email.setAuthenticator(new DefaultAuthenticator("kevjosteph@gmail.com", "abcd4ABCD"));
@@ -86,8 +74,26 @@ public class MailSenderTimerSessionBean {
         email.setFrom("kevjosteph@gmail.com");
         email.setSubject(subject);
         email.setMsg(message);
-        email.addTo(recipient);
+        email.addTo("kevjosteph@gmail.com");
+
+        if (mailManager.getAllFiles(faitReference) != null) {
+            List<FileMail> listFile = new ArrayList<>();
+            listFile = mailManager.getAllFiles(faitReference);
+            for (FileMail fileMail : listFile) {
+                EmailAttachment attachment = new EmailAttachment();
+
+                attachment.setPath(fileMail.getPath());
+                attachment.setDisposition(EmailAttachment.ATTACHMENT);
+                attachment.setDescription("Picture of John");
+                attachment.setName("John");
+                email.attach(attachment);
+            }
+        }
         email.send();
+
+        System.out.println("Le mail a été envoyé à : " + recipient);
+        System.out.println("avec le sujet : " + subject);
+        System.out.println("et le corps du message est : " + message);
     }
 
     //Tous les jours aï¿½ 00h on reinitialise le compteur aï¿½ 0

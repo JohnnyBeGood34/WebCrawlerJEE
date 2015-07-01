@@ -38,7 +38,20 @@ public class MailManager
         em.persist(object);
       }
 
+    public List<FileMail> getAllFiles(FaitReference faitReference){
+        List<FileMail> listToReturn = null;
+        Query request = em.createNamedQuery("File.finByIdMail");
+        request.setParameter("idMail", faitReference.getIdMail());
+        if(request.getResultList().size() > 0){
+            listToReturn = request.getResultList();
+        }
+        return listToReturn;
+    }
 
+    public void saveMailDelivered(FaitReference faitReference){
+        faitReference.setDistributed(true);
+        em.merge(faitReference);
+    }
     
     public List<Mail> getAllMails()
       {
