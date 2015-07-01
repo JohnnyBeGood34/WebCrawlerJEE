@@ -33,6 +33,9 @@ public class SearchCrawler {
      */
     private static HashMap<String,ArrayList<String>> mails;
     
+    /**
+     * False while the limit hasn't been reached, true otherwise
+     */
     public boolean hasReachedLimit =false;
     
     /**
@@ -47,7 +50,7 @@ public class SearchCrawler {
     }
     
     /**
-     * 
+     * Thread-safe method to get the total number of mails found
      * @return the number of emails found for this search
      */
     public synchronized int size(){
@@ -108,7 +111,7 @@ public class SearchCrawler {
     
     /**
      * 
-     * @return the limit 
+     * @return the limit of the search
      */
     public int getLimit(){
         return this.limit;
@@ -117,7 +120,7 @@ public class SearchCrawler {
     /**
      * Method to add an email found to the list
      * @param email An email found in a website page
-     * @param site
+     * @param site The website where the email is found
      */
     public  synchronized void addEmail(String email,String site){
         

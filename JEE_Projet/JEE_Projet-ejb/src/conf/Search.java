@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Search.findByTherm", query = "SELECT s FROM Search s WHERE s.therm = :therm"),
     @NamedQuery(name = "Search.findByDeepLevel", query = "SELECT s FROM Search s WHERE s.deepLevel = :deepLevel"),
     @NamedQuery(name = "Search.findByIsFr", query = "SELECT s FROM Search s WHERE s.isFr = :isFr"),
-    @NamedQuery(name = "Search.findByDateSearch", query = "SELECT s FROM Search s WHERE s.dateSearch = :dateSearch")
+    @NamedQuery(name = "Search.findByDateSearch", query = "SELECT s FROM Search s WHERE s.dateSearch = :dateSearch"),
+    @NamedQuery(name = "Search.findByThermAndDeepLevel", query = "SELECT s FROM Search s WHERE s.therm = :therm AND s.deepLevel = :deepLevel")
   })
 public class Search implements Serializable
   {

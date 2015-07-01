@@ -49,15 +49,16 @@ public class CrawlerManager {
         LIMIT = limit;
     }
 
-        
+
     /**
      * 
-     * @return
+     * @return A dictionary with the website as key 
+     * and a list of emails as value
      * @throws IOException 
      */
-    public List<String> getResultFromSearchCrawler() throws IOException {
-        List<String> resultListEmailsFromSearch = new ArrayList<>();
-                
+                               
+    public HashMap<String, ArrayList<String>> getResults() throws IOException{
+
         SearchCrawler search = new SearchCrawler(_inputSearch, _deepLevel);
         search.setLimit(LIMIT);
         GoogleSearch googleEngine = new GoogleSearch(_inputSearch);
@@ -80,11 +81,22 @@ public class CrawlerManager {
                 Logger.getLogger(CrawlerManager.class.getName()).log(Level.SEVERE, null, ex);
             }
           
-        }
-        
+        }        
         HashMap<String, ArrayList<String>> results;
         results = search.getMails();
-
+        return results;
+    }
+    
+    /**
+     * 
+     * @return The list of all emails
+     * @throws IOException 
+     */
+    public List<String> getResultFromSearchCrawler() throws IOException {
+        
+        List<String> resultListEmailsFromSearch = new ArrayList<>();
+        HashMap<String, ArrayList<String>> results = getResults();
+        
         for (Map.Entry<String, ArrayList<String>> entry : results.entrySet()) {
 
             ArrayList<String> mails = entry.getValue();
@@ -92,7 +104,6 @@ public class CrawlerManager {
                 resultListEmailsFromSearch.add(mail);
             }
         }
-
         return resultListEmailsFromSearch;
     }
 

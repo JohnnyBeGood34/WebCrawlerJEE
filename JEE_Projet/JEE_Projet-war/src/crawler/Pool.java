@@ -54,7 +54,7 @@ public class Pool {
     /**
      * Method which adds an URL to the list 
      * @param result a ResultSearch
-     * thread-safe methog
+     * thread-safe method
      */
     public void addUrl(ResultSearch result){
         lock.lock();
@@ -64,9 +64,7 @@ public class Pool {
             results.add(result);
             urlAdded.signal();
         }
-        else{
-            System.out.println("Url déjà recherchée : "+url);
-        }
+        
        lock.unlock();
         
     }
@@ -81,12 +79,16 @@ public class Pool {
         this.searchEngine=engine;
     }
     
+    /**
+     * 
+     * @return List of result objects
+     */
     public ArrayList<ResultSearch> getUrls(){
         return results;
     }
     
     /**
-     * Method allowing to get an URL from the list if the list 
+     * Thread-safe method allowing to get an URL from the list if the list 
      * is not empty
      * @return String An URL from the list
      */
@@ -106,7 +108,7 @@ public class Pool {
     /**
      * Method to know if an url has already been processed
      * for the current search
-     * @param url
+     * @param url The string url
      * @return True if the url has already  been processed , false otherwise
      */
     public synchronized boolean hasAlreadyTreatedUrl(String url){

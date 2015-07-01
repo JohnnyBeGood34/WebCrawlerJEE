@@ -46,12 +46,15 @@ public class CampaignManagedBean
     MailManager mailmanager;
     @EJB
     MailManager mailManager;
+    @EJB
+    CompaignManager campaignManager;
     @Inject
     MailManagedSessionBean mailManagedSessionBean;
     private MailingCampaign mailingCampaign;
     private Mail mailForCampaign;
     private FileMail mailFile;
-
+   
+    
     public void downloadFile()
       {
         File file = new File(getMailFile().getPath());
@@ -102,7 +105,8 @@ public class CampaignManagedBean
 
     public Mail getMailForCampaign()
       {
-        return campaignManager.getMailForCampaign(campaignBean.getMailingCampaign());
+        setMailForCampaign(campaignManager.getMailForCampaign(campaignBean.getMailingCampaign()));
+        return this.mailForCampaign;
       }
 
     public void setMailForCampaign(Mail mailForCampaign)
@@ -110,18 +114,21 @@ public class CampaignManagedBean
         this.mailForCampaign = mailForCampaign;
       }
 
-    @EJB
-    CompaignManager campaignManager;
-
     public String creerCampagne()
       {
+        String stringToResult = "mailingPersonnalization?faces-redirect=true";
+        
         mailingCampaign.setIdUser(loginbean.getCurrentUser().getIdUser());
         mailingCampaign.setDateEnvoi(new Date());
         mailingCampaign.setIdSearch(searchManagedSessionBean.getSearch().getIdSearch());
         campaignManager.createCampaign(mailingCampaign);
 
         campaignBean.setMailingcampaign(mailingCampaign);
-        return "mailingPersonnalization?faces-redirect=true";
+        
+        if(!loginbean.isLoggedIn()){
+            stringToResult = "index?faces-redirect=true";
+        }
+        return stringToResult;
       }
 
     /**
@@ -140,6 +147,7 @@ public class CampaignManagedBean
     public CampaignManagedBean()
       {
         mailingCampaign = new MailingCampaign();
+        mailForCampaign = new Mail();
       }
 
     /**
@@ -153,7 +161,7 @@ public class CampaignManagedBean
           {
             for (Searchresults sr : searchResultManagedBean.getLocalSearchResults())
               {
-                System.out.println("THE FUCKING IS IN CAMPAIGN : " + sr.getIsInCampaign());
+                System.out.println("THE IS IN CAMPAIGN : " + sr.getIsInCampaign());
               }
           }
         return "mailing";
@@ -176,5 +184,9 @@ public class CampaignManagedBean
         }
         return "campaignDetails?faces-redirect=true";
       }
+    
+    public void reSendMail(){
+        campaignManager.updateMailAndResults(mailManagedSessionBean.getMail());
+    }
 
   }

@@ -47,7 +47,7 @@
                                             <f:selectItem itemValue="5" itemLabel="Niveau 5" />
                                         </h:selectOneMenu>
                                         <hr/>
-                                        <h:selectBooleanCheckbox id="isFr" value="#{searchManagedBean.search.isFr}" /> Uniquement page .fr
+                                        <!--<h:selectBooleanCheckbox id="isFr" value="#{searchManagedBean.search.isFr}" /> Uniquement page .fr!-->
                                     </div>
                                 </div>
                             </h:panelGroup>
@@ -64,15 +64,15 @@
                         <h:dataTable value="#{searchResultsManagedBean.searchResults}" var="item" class="table">
                             <h:column>
                                 <f:facet name="header">
-                                    <h:commandButton action="#{searchResultsManagedBean.updateAllIsInCampaign()}" value="Tout selectionner" class="btn btn-primary addAllResultsToCampaignButton">
+                                    <h:commandButton action="#{searchResultsManagedBean.updateAllIsInCampaign()}" value="Tout selectionner" class="btn btn-primary addAllResultsToCampaignButton" rendered="#{loginManagedBean.loggedIn}">
                                         <f:ajax />
                                     </h:commandButton>
                                 </f:facet>
                                 <!--<h:selectBooleanCheckbox value="#{item.isInCampaign}"/>-->
-                                <h:commandButton rendered="#{!item.isInCampaign}" action="#{searchResultsManagedBean.updateIsInCampaign(item)}" value="+" class="btn btn-primary addToCampaignButton">
+                                <h:commandButton rendered="#{!item.isInCampaign and loginManagedBean.loggedIn}" action="#{searchResultsManagedBean.updateIsInCampaign(item)}" value="+" class="btn btn-primary addToCampaignButton">
                                     <f:ajax />
                                 </h:commandButton>
-                                <h:commandButton rendered="#{item.isInCampaign}" action="#{searchResultsManagedBean.updateIsInCampaign(item)}" value="-" class="btn btn-danger addToCampaignButton">
+                                <h:commandButton rendered="#{item.isInCampaign and loginManagedBean.loggedIn}" action="#{searchResultsManagedBean.updateIsInCampaign(item)}" value="-" class="btn btn-danger addToCampaignButton">
                                     <f:ajax />
                                 </h:commandButton>
                             </h:column>

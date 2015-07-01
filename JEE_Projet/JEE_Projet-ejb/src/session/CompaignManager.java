@@ -12,6 +12,7 @@ import conf.Search;
 import conf.Searchresults;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -26,6 +27,8 @@ public class CompaignManager
 
     @PersistenceContext(unitName = "JEE_Projet-ejbPU")
     private EntityManager em;
+    @Inject
+    MailManager mailManager;
 
     public void persist(Object object)
       {
@@ -85,13 +88,32 @@ public class CompaignManager
         Search campaignSearch = new Search(aCampaign.getIdSearch());
         Query request = em.createNamedQuery("Searchresults.findByIdSearch");
         request.setParameter("idSearch", campaignSearch);
-        if(request.getResultList().size() > 0){
+        if (request.getResultList().size() > 0)
+          {
             listToReturn = request.getResultList();
-        }
+          }
         return listToReturn;
       }
 
     /*public List<FaitReference> getAllMailForCampaign(){
         
      }*/
+    public void updateMailAndResults(Mail mailForCampaign)
+      {
+        System.out.println("MAIL OBJECT " + mailForCampaign.getObjet());
+        em.merge(mailForCampaign);
+
+        List<FaitReference> references = mailManager.getAllReferences(mailForCampaign);
+        if (references != null)
+          {
+            if (references.size() > 0)
+              {
+                for (FaitReference reference : references)
+                  {
+                    reference.setDistributed(false);
+                    em.merge(reference);
+                  }
+              }
+          }
+      }
   }

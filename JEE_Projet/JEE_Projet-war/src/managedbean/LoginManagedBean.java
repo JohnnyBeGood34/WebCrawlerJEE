@@ -29,6 +29,8 @@ public class LoginManagedBean implements Serializable
     Credential credentials;
     private User utilisateur;
     private Address utilisateurAdresse;
+    @Inject
+    SearchManagedSessionBean searchSessionbean;
     // Injection de notre EJB (Session Bean Stateless)
     @EJB
     private UserManager userManager;
@@ -77,6 +79,7 @@ public class LoginManagedBean implements Serializable
       {
         utilisateur = null;
         utilisateurAdresse = null;
+        searchSessionbean.setSearch(null);
       }
 
     public boolean isLoggedIn()

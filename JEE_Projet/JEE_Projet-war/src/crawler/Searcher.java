@@ -71,6 +71,7 @@ public class Searcher extends Thread{
      * Method which finds links in a given HTML Document
      * @param dom Represents the DOM of a HTML document
      * @param domainName The domain name of the document we are scanning to save it in the pool
+     * @param currentLevelSearch The current level of the search
      * @throws MalformedURLException 
      */
     private void findLinksIntoPage(Document dom ,String domainName,int currentLevelSearch) throws MalformedURLException{
