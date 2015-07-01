@@ -46,12 +46,15 @@ public class CampaignManagedBean
     MailManager mailmanager;
     @EJB
     MailManager mailManager;
+    @EJB
+    CompaignManager campaignManager;
     @Inject
     MailManagedSessionBean mailManagedSessionBean;
     private MailingCampaign mailingCampaign;
     private Mail mailForCampaign;
     private FileMail mailFile;
-
+   
+    
     public void downloadFile()
       {
         File file = new File(getMailFile().getPath());
@@ -102,16 +105,14 @@ public class CampaignManagedBean
 
     public Mail getMailForCampaign()
       {
-        return campaignManager.getMailForCampaign(campaignBean.getMailingCampaign());
+        setMailForCampaign(campaignManager.getMailForCampaign(campaignBean.getMailingCampaign()));
+        return this.mailForCampaign;
       }
 
     public void setMailForCampaign(Mail mailForCampaign)
       {
         this.mailForCampaign = mailForCampaign;
       }
-
-    @EJB
-    CompaignManager campaignManager;
 
     public String creerCampagne()
       {
@@ -140,6 +141,7 @@ public class CampaignManagedBean
     public CampaignManagedBean()
       {
         mailingCampaign = new MailingCampaign();
+        mailForCampaign = new Mail();
       }
 
     /**
@@ -176,5 +178,9 @@ public class CampaignManagedBean
         }
         return "campaignDetails?faces-redirect=true";
       }
+    
+    public void reSendMail(){
+        campaignManager.updateMailAndResults(mailManagedSessionBean.getMail());
+    }
 
   }

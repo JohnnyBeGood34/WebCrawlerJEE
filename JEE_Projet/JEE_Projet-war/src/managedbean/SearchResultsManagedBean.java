@@ -35,7 +35,8 @@ public class SearchResultsManagedBean
     private SearchManager searchManager;
     @Inject
     SearchManagedSessionBean searchSessionbean;
-
+    @Inject
+    LoginManagedBean loginbean;
     /**
      * Creates a new instance of SearchResultsManagedBean
      */
@@ -61,7 +62,7 @@ public class SearchResultsManagedBean
         List<Searchresults> listToReturnIfResultsAreEmpty = new ArrayList();
         this.searchResults = searchManager.getResultsFromDataBase(searchSessionbean.getSearch());
         //If there aren't any results in database
-        if (this.searchResults.isEmpty() && searchSessionbean.getSearch()!= null)
+        if (this.searchResults.isEmpty() && searchSessionbean.getSearch()!= null && !loginbean.isLoggedIn())
           {
             try
               {
