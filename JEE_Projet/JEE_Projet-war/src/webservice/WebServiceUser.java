@@ -66,6 +66,13 @@ public class WebServiceUser {
 
     /**
      * Web service operation
+     * @param iduser
+     * @param firstname
+     * @param name
+     * @param email
+     * @param denied
+     * @param password
+     * @return 
      */
     @WebMethod(operationName = "updateUser")
     public User updateUser(@WebParam(name = "iduser") int iduser, @WebParam(name = "name") String name, @WebParam(name = "firstname") String firstname, @WebParam(name = "email") String email, @WebParam(name = "password") String password, @WebParam(name = "denied") boolean denied) {
