@@ -5,6 +5,7 @@
  */
 package session;
 
+import conf.Effectuer;
 import conf.FaitReference;
 import conf.FileMail;
 import conf.Mail;
